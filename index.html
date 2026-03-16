@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plataforma de Gestão Hídrica Urbana - Rio Verde</title>
+    <meta name="description" content="Sistema de simulação e gerenciamento de abastecimento de água entre cidades">
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header class="cabecalho">
+        <div class="cabecalho-conteudo">
+            <h1>💧 Plataforma de Gestão Hídrica Urbana</h1>
+            <p class="subtitulo">Sistema Inteligente de Gerenciamento de Água - Região de Rio Verde/GO</p>
+        </div>
+        <div class="cabecalho-tempo">
+            <span>Data da Simulação:</span>
+            <strong id="tempo-simulacao">1/1/2024</strong>
+        </div>
+    </header>
+
+    <main class="principal">
+        <aside class="barra-lateral">
+            <section class="painel painel-metricas">
+                <h2>📊 Métricas do Sistema</h2>
+                <div class="metricas-grid">
+                    <div class="metrica-card">
+                        <span class="metrica-label">Demanda Total</span>
+                        <span id="metrica-demanda-total" class="metrica-valor">-- m³/dia</span>
+                    </div>
+                    <div class="metrica-card">
+                        <span class="metrica-label">Produção Total</span>
+                        <span id="metrica-producao-total" class="metrica-valor">-- m³/dia</span>
+                    </div>
+                    <div class="metrica-card">
+                        <span class="metrica-label">Reservatório Total</span>
+                        <span id="metrica-reservatorio-total" class="metrica-valor">-- m³</span>
+                    </div>
+                    <div class="metrica-card alerta">
+                        <span class="metrica-label">Cidades Críticas</span>
+                        <span id="metrica-cidades-criticas" class="metrica-valor">0</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="painel painel-eventos">
+                <h2>⚡ Simular Eventos</h2>
+                <div class="botoes-eventos">
+                    <button id="btn-seca" class="btn btn-evento btn-seca">
+                        🏜️ Seca
+                    </button>
+                    <button id="btn-chuva" class="btn btn-evento btn-chuva">
+                        🌧️ Chuva Intensa
+                    </button>
+                    <button id="btn-crescimento" class="btn btn-evento btn-crescimento">
+                        📈 Crescimento Populacional
+                    </button>
+                    <button id="btn-industrial" class="btn btn-evento btn-industrial">
+                        🏭 Aumento Industrial
+                    </button>
+                    <button id="btn-quebra" class="btn btn-evento btn-quebra">
+                        💥 Quebra de Reservatório
+                    </button>
+                    <button id="btn-sem-agua" class="btn btn-evento btn-critico">
+                        🚫 Cidade sem Água
+                    </button>
+                </div>
+                <div class="info-evento">
+                    <small>Selecione uma cidade no mapa antes de aplicar eventos específicos</small>
+                </div>
+            </section>
+
+            <section class="painel painel-tempo">
+                <h2>⏱️ Controle de Tempo</h2>
+                <div class="botoes-tempo">
+                    <button id="btn-avancar-hora" class="btn btn-tempo">+1 Hora</button>
+                    <button id="btn-avancar-dia" class="btn btn-tempo">+1 Dia</button>
+                    <button id="btn-avancar-mes" class="btn btn-tempo">+1 Mês</button>
+                    <button id="btn-avancar-ano" class="btn btn-tempo">+1 Ano</button>
+                </div>
+            </section>
+
+            <section class="painel painel-redistribuicao">
+                <h2>🔄 Redistribuição</h2>
+                <button id="btn-redistribuir" class="btn btn-redistribuir">
+                    Executar Redistribuição Automática
+                </button>
+                <p class="info-redistribuicao">
+                    O sistema transfere água automaticamente de cidades com excedente para cidades em déficit.
+                </p>
+            </section>
+
+            <section class="painel painel-acoes">
+                <button id="btn-reiniciar" class="btn btn-reiniciar">
+                    🔄 Reiniciar Simulação
+                </button>
+            </section>
+        </aside>
+
+        <div class="area-central">
+            <section class="painel painel-mapa">
+                <h2>🗺️ Mapa das Cidades</h2>
+                <div id="mapa" class="mapa-container"></div>
+                <div class="legenda-mapa">
+                    <span class="legenda-item"><span class="cor normal"></span> Normal</span>
+                    <span class="legenda-item"><span class="cor pressao"></span> Pressão</span>
+                    <span class="legenda-item"><span class="cor critico"></span> Crítico</span>
+                </div>
+            </section>
+
+            <div class="area-graficos">
+                <section class="painel painel-grafico">
+                    <div class="grafico-container">
+                        <canvas id="grafico-demanda"></canvas>
+                    </div>
+                </section>
+
+                <section class="painel painel-grafico">
+                    <div class="grafico-container">
+                        <canvas id="grafico-producao"></canvas>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <aside class="barra-lateral-direita">
+            <section class="painel painel-cidade" id="painel-cidade">
+                <h2>🏙️ Cidade Selecionada</h2>
+                <p class="info-selecao">Clique em uma cidade no mapa para ver detalhes</p>
+            </section>
+
+            <section class="painel painel-formulas" id="painel-formulas">
+                <h2>📐 Fórmulas Científicas</h2>
+                <div class="formula-item">
+                    <h4>Cálculo de Demanda</h4>
+                    <code>Demanda = População × Consumo(L/hab/dia) ÷ 1000</code>
+                </div>
+                <div class="formula-item">
+                    <h4>Produção Efetiva</h4>
+                    <code>Prod.Efetiva = Prod.Bruta × (100% - Perda%)</code>
+                </div>
+                <div class="formula-item">
+                    <h4>Índice de Estresse Hídrico</h4>
+                    <code>IEH = Demanda / Disponibilidade</code>
+                </div>
+                <div class="formula-item">
+                    <h4>Balanço Hídrico</h4>
+                    <code>Balanço = Produção - Demanda + Reservatório</code>
+                </div>
+            </section>
+
+            <section class="painel painel-grafico-previsao">
+                <h2>🤖 Previsão IA</h2>
+                <div class="grafico-container">
+                    <canvas id="grafico-previsao"></canvas>
+                </div>
+            </section>
+
+            <section class="painel painel-eventos-historico">
+                <h2>📜 Histórico de Eventos</h2>
+                <div id="lista-eventos" class="lista-eventos">
+                    <p>Nenhum evento registrado</p>
+                </div>
+            </section>
+        </aside>
+    </main>
+
+    <footer class="rodape">
+        <div class="rodape-conteudo">
+            <p>
+                <strong>Plataforma de Gestão Hídrica Urbana</strong> - 
+                Trabalho de Conclusão de Curso
+            </p>
+            <p>
+                Dados baseados em Rio Verde e cidades vizinhas - Goiás, Brasil
+            </p>
+            <p class="dados-reais">
+                População Total: 402.000 habitantes | 
+                Consumo médio: 150 L/hab/dia | 
+                Coeficiente de perda: 25%
+            </p>
+        </div>
+    </footer>
+
+    <div id="notificacoes" class="container-notificacoes"></div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.10.0/dist/tf.min.js"></script>
+    <script type="module" src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,183 @@
+{
+  "cidades": [
+    {
+      "id": "rio-verde",
+      "nome": "Rio Verde",
+      "estado": "Goiás",
+      "coordenadas": {
+        "lat": -17.7911,
+        "lng": -50.9256
+      },
+      "populacao": 241494,
+      "fonte_populacao": "IBGE - Estimativa 2025",
+      "consumo_medio_litros_dia": 150,
+      "capacidade_reservatorio_m3": 53000,
+      "producao_diaria_m3": 48000,
+      "nivel_atual_reservatorio_m3": 37000,
+      "industria_ativa": true,
+      "fator_industrial": 1.15,
+      "clima_historico": {
+        "temperatura_media_anual": 25.5,
+        "precipitacao_media_anual_mm": 1650,
+        "umidade_media_percentual": 65,
+        "fonte": "INMET - Normal Climatológica 1991-2020"
+      }
+    },
+    {
+      "id": "santa-helena",
+      "nome": "Santa Helena de Goiás",
+      "estado": "Goiás",
+      "coordenadas": {
+        "lat": -17.8108,
+        "lng": -50.5008
+      },
+      "populacao": 43000,
+      "fonte_populacao": "IBGE - Censo 2022",
+      "consumo_medio_litros_dia": 150,
+      "capacidade_reservatorio_m3": 12000,
+      "producao_diaria_m3": 10000,
+      "nivel_atual_reservatorio_m3": 8500,
+      "industria_ativa": true,
+      "fator_industrial": 1.10,
+      "clima_historico": {
+        "temperatura_media_anual": 26.0,
+        "precipitacao_media_anual_mm": 1600,
+        "umidade_media_percentual": 63,
+        "fonte": "INMET - Normal Climatológica 1991-2020"
+      }
+    },
+    {
+      "id": "jatai",
+      "nome": "Jataí",
+      "estado": "Goiás",
+      "coordenadas": {
+        "lat": -17.8814,
+        "lng": -51.7147
+      },
+      "populacao": 107000,
+      "fonte_populacao": "IBGE - Censo 2022",
+      "consumo_medio_litros_dia": 150,
+      "capacidade_reservatorio_m3": 25000,
+      "producao_diaria_m3": 22000,
+      "nivel_atual_reservatorio_m3": 18000,
+      "industria_ativa": true,
+      "fator_industrial": 1.12,
+      "clima_historico": {
+        "temperatura_media_anual": 24.8,
+        "precipitacao_media_anual_mm": 1700,
+        "umidade_media_percentual": 68,
+        "fonte": "INMET - Normal Climatológica 1991-2020"
+      }
+    },
+    {
+      "id": "montividiu",
+      "nome": "Montividiu",
+      "estado": "Goiás",
+      "coordenadas": {
+        "lat": -17.4611,
+        "lng": -51.3736
+      },
+      "populacao": 12000,
+      "fonte_populacao": "IBGE - Censo 2022",
+      "consumo_medio_litros_dia": 150,
+      "capacidade_reservatorio_m3": 4000,
+      "producao_diaria_m3": 3500,
+      "nivel_atual_reservatorio_m3": 2800,
+      "industria_ativa": false,
+      "fator_industrial": 1.0,
+      "clima_historico": {
+        "temperatura_media_anual": 25.2,
+        "precipitacao_media_anual_mm": 1680,
+        "umidade_media_percentual": 66,
+        "fonte": "INMET - Normal Climatológica 1991-2020"
+      }
+    },
+    {
+      "id": "santo-antonio-barra",
+      "nome": "Santo Antônio da Barra",
+      "estado": "Goiás",
+      "coordenadas": {
+        "lat": -17.8167,
+        "lng": -50.7833
+      },
+      "populacao": 7000,
+      "fonte_populacao": "IBGE - Censo 2022",
+      "consumo_medio_litros_dia": 150,
+      "capacidade_reservatorio_m3": 2500,
+      "producao_diaria_m3": 2000,
+      "nivel_atual_reservatorio_m3": 1600,
+      "industria_ativa": false,
+      "fator_industrial": 1.0,
+      "clima_historico": {
+        "temperatura_media_anual": 25.8,
+        "precipitacao_media_anual_mm": 1620,
+        "umidade_media_percentual": 64,
+        "fonte": "INMET - Normal Climatológica 1991-2020"
+      }
+    },
+    {
+      "id": "castelandia",
+      "nome": "Castelândia",
+      "estado": "Goiás",
+      "coordenadas": {
+        "lat": -17.8333,
+        "lng": -50.5500
+      },
+      "populacao": 5000,
+      "fonte_populacao": "IBGE - Censo 2022",
+      "consumo_medio_litros_dia": 150,
+      "capacidade_reservatorio_m3": 1800,
+      "producao_diaria_m3": 1500,
+      "nivel_atual_reservatorio_m3": 1200,
+      "industria_ativa": false,
+      "fator_industrial": 1.0,
+      "clima_historico": {
+        "temperatura_media_anual": 25.9,
+        "precipitacao_media_anual_mm": 1610,
+        "umidade_media_percentual": 64,
+        "fonte": "INMET - Normal Climatológica 1991-2020"
+      }
+    }
+  ],
+  "conexoes": [
+    {
+      "origem": "rio-verde",
+      "destino": "santa-helena",
+      "distancia_km": 45,
+      "capacidade_transferencia_m3_dia": 5000
+    },
+    {
+      "origem": "rio-verde",
+      "destino": "jatai",
+      "distancia_km": 85,
+      "capacidade_transferencia_m3_dia": 8000
+    },
+    {
+      "origem": "rio-verde",
+      "destino": "santo-antonio-barra",
+      "distancia_km": 15,
+      "capacidade_transferencia_m3_dia": 3000
+    },
+    {
+      "origem": "santa-helena",
+      "destino": "castelandia",
+      "distancia_km": 12,
+      "capacidade_transferencia_m3_dia": 1500
+    },
+    {
+      "origem": "jatai",
+      "destino": "montividiu",
+      "distancia_km": 55,
+      "capacidade_transferencia_m3_dia": 2500
+    }
+  ],
+  "parametros_sistema": {
+    "consumo_litros_pessoa_dia": 150,
+    "perda_percentual": 25,
+    "reserva_minima_percentual": 20,
+    "fator_seca": 0.6,
+    "fator_chuva": 1.4,
+    "fator_crescimento_populacional": 1.02,
+    "fator_aumento_industrial": 1.15
+  }
+}

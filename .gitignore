@@ -1,0 +1,30 @@
+# Arquivos de sistema
+.directory
+.DS_Store
+Thumbs.db
+
+# Sisyphus internal
+.sisyphus/
+
+# Arquivos temporários
+*.tmp
+*.temp
+*.log
+
+# Screenshots de desenvolvimento
+screenshot-*.png
+layout_screenshot.png
+
+# Scripts de teste
+test_*.mjs
+generate_data.py
+generated_*.json
+
+# Node modules (se houver)
+node_modules/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
