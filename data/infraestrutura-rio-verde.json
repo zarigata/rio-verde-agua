@@ -115,7 +115,8 @@
       "capacidade_valor": null,
       "capacidade_unidade": null,
       "descricao": "Lote 1: captação de água com bombas e subestação. Adutora de 7,3 km com tubulação de 800 mm. Investimento R$ 47 milhões. Prazo planejado: 19 meses (a partir de out 2024).",
-      "citação": "as obras no Rio Verdinho envolvem três etapas. O Lote 1 compreende a captação de água,      "investimento": "R$ 47.000.000",
+      "citação": "as obras no Rio Verdinho envolvem três etapas. O Lote 1 compreende a captação de água",
+      "investimento": "R$ 47.000.000",
       "prazo": "19 meses",
       "status_operacional": "em_construcao"
     },

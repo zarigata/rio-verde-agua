@@ -17,7 +17,7 @@
         "Cobertura água: 99% população urbana",
         "Cobertura esgoto: 96,3% população urbana",
         "Rede coletora: 963 km",
-        "Esgoto tratado: 26 milhões de litros/dia"
+        "Esgoto tratado: 26 milhões de litros/dia",
         "Fontes hídricas: Ribeirão Abóbora, Ribeirão da Laje"
       ]
     },
@@ -62,4 +62,7 @@
       "acessado_em": "2026-04-02",
       "status_acesso": "404 — Página não encontrada em 02/04/2026",
       "dados_extraidos": [],
-      "observacao": "LACUNA DE DADOS: A URL retornou erro 404. Dados que poderiam ter sido extraídos desta página não estão disponíveis. Qualquer informação originária deste AMAE deve ser buscada em fontes alternativas antes de ser incluída."
+      "observacao": "LACUNA DE DADOS: A URL retornou erro 404. Dados que poderiam ter sido extraidos desta página nao estao disponiveis. Qualquer informacao originaria deste AMAE deve ser buscada em fontes alternativas antes de ser incluida."
+    }
+  ]
+}
