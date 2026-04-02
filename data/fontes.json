@@ -1,0 +1,65 @@
+{
+  "fontes": [
+    {
+      "id": "fonte-saneago-2023",
+      "titulo": "Prefeito e diretoria da Saneago realizam visita técnica em unidades de Rio Verde",
+      "url": "https://www.saneago.com.br/#/noticia_interna/9868/3",
+      "data_publicacao": "2023-08-18",
+      "autor": "Saneago",
+      "tipo": "artigo institucional",
+      "acessado_em": "2026-04-02",
+      "status_acesso": "acessível via browser (SPA Angular, requer JS)",
+      "dados_extraidos": [
+        "ETA Abóbora: capacidade 120 L/s, 4 estações compactas em aço",
+        "Centro de Reservação Aeroporto: 2 reservatórios × 1.000.000 L (1.000 m³ cada)",
+        "Centro de Reservação Gameleiras: em obras",
+        "ETE Chapadinha: capacidade 58 L/s, tecnologia MBBR",
+        "Cobertura água: 99% população urbana",
+        "Cobertura esgoto: 96,3% população urbana",
+        "Rede coletora: 963 km",
+        "Esgoto tratado: 26 milhões de litros/dia"
+        "Fontes hídricas: Ribeirão Abóbora, Ribeirão da Laje"
+      ]
+    },
+    {
+      "id": "fonte-camara-2024",
+      "titulo": "Prefeitura, Saneago e Governo de Goiás lançam as obras do novo sistema de abastecimento de água Rio Verdinho",
+      "url": "https://rioverde.go.leg.br/prefeitura-saneago-e-governo-de-goias-lancam-as-obras-do-novo-sistema-de-abastecimento-de-agua-rio-verdinho/",
+      "data_publicacao": "2024-10-01",
+      "autor": "Câmara Municipal de Rio Verde",
+      "tipo": "matéria jornalística",
+      "acessado_em": "2026-04-02",
+      "status_acesso": "acessível via browser (HTML estático)",
+      "dados_extraidos": [
+        "Lote 1: Captação + adutora 7,3 km (800 mm), R$ 47 milhões, 19 meses",
+        "Lote 2: ETA 800 L/s + 2 reservatórios × 2.000.000 L. R$ 62,7 milhões. Automatizada.",
+        "Lote 3A: 14 km adutoras + 7 centros de reservação (100k-2M litros)",
+        "Lote 3B: 12,4 km adutoras + 5 centros de reservação + 1 estação elevatória",
+        "Lote 3 investimento total: R$ 93 milhões",
+        "Investimento total do sistema: R$ 202,700.000 (47M + 62,7M + 93M)"
+      ]
+    },
+    {
+      "id": "fonte-ibge-pop",
+      "titulo": "Estimativa populacional IBGE 2025 — Rio Verde",
+      "url": "https://www.ibge.gov.br/",
+      "data_publicacao": "2025",
+      "autor": "IBGE",
+      "tipo": "estimativa oficial",
+      "acessado_em": "2026-04-02",
+      "status_acesso": "portal público",
+      "dados_extraidos": [
+        "População estimada: 241.494 habitantes"
+      ]
+    },
+    {
+      "id": "fonte-amae-404",
+      "titulo": "Análise de Impacto — AMAE Rio Verde (INDISPONÍVEL)",
+      "url": "https://amae.rioverde.go.gov.br/analiseimpacto",
+      "data_publicacao": null,
+      "autor": "AMAE — Agência de Regulação dos Serviços Públicos de Saneamento Básico",
+      "tipo": "relatório regulatório",
+      "acessado_em": "2026-04-02",
+      "status_acesso": "404 — Página não encontrada em 02/04/2026",
+      "dados_extraidos": [],
+      "observacao": "LACUNA DE DADOS: A URL retornou erro 404. Dados que poderiam ter sido extraídos desta página não estão disponíveis. Qualquer informação originária deste AMAE deve ser buscada em fontes alternativas antes de ser incluída."

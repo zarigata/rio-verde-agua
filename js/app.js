@@ -1,320 +1,275 @@
-import { carregarDados, inscrever, obterEstado, simularEvento, avancarTempo, obterCidadePorId, obterTodasCidades, definirNivelReservatorio } from './simulador.js';
-import { executarRedistribuicao, verificarNecessidadeRedistribuicao } from './redistribuicao.js';
-import { inicializarMapa, renderizarCidades, atualizarVisualizacao, centralizarEmCidade, definirCallbackClique } from './mapa.js';
-import { inicializarGraficos, atualizarGraficos, atualizarGraficoPrevisao } from './graficos.js';
-import { criarModelo, treinarModelo, preverDemanda, gerarPrevisoesFuturas, calcularConfianca } from './ia.js';
-import { gerarRelatorioCidade } from './hidrologia.js';
+import { carregarDados, obterInfraestrutura, obterIndicadores, obterFontes } from './data.js';
+import { inicializarMapa, renderizarInfraestrutura } from './mapa.js';
+import { inicializarGraficos, atualizarGraficoSimulacao, atualizarGraficoProducaoDemanda } from './graficos.js';
+import { inicializarSimulacao, inscrever, obterEstado, simularEvento, avancarTempo, reiniciarSimulacao } from './simulador.js';
 
-let dadosCidades = null;
-let dadosHistorico = null;
-let cidadeSelecionada = null;
+/**
+ * app.js — Orquestrador principal
+ * Coordena dados, mapa, gráficos, simulação e renderização da UI.
+ */
 
-async function inicializar() {
-    await carregarDadosCidades();
-    await carregarDadosHistorico();
-    
-    inicializarMapa('mapa');
-    inicializarGraficos();
-    
-    if (dadosCidades && dadosHistorico) {
-        carregarDados(dadosCidades.cidades, dadosCidades.conexoes);
-        
-        await treinarModeloIA();
-    }
-    
-    inscrever(atualizarInterface);
-    
-    definirCallbackClique(aoSelecionarCidade);
-    
-    configurarEventosInterface();
-    
-    atualizarInterface(obterEstado());
+// ── Renderização da tabela de infraestrutura ──────────────────────────────
+
+function renderizarTabela(itens) {
+  const container = document.getElementById('tabela-infraestrutura');
+  if (!container) return;
+
+  const tipoLabel = {
+    captacao: 'Captação',
+    captacao_natural: 'Manancial',
+    tratamento: 'Tratamento',
+    reservacao: 'Reservação',
+    tratamento_esgoto: 'Tratamento de Esgoto',
+    distribuicao: 'Distribuição'
+  };
+
+  const certezaCores = {
+    confirmed: 'var(--cor-confirmado)',
+    derived: 'var(--cor-derivado)',
+    approximate: 'var(--cor-aproximado)'
+  };
+
+  const certezaLabels = {
+    confirmed: 'Confirmado',
+    derived: 'Derivado',
+    approximate: 'Aproximado'
+  };
+
+  const statusLabels = {
+    operacional: 'Operacional',
+    em_construcao: 'Em construção'
+  };
+
+  const html = `
+    <div class="tabela-responsiva">
+      <table>
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Tipo</th>
+            <th>Capacidade</th>
+            <th>Certeza</th>
+            <th>Status</th>
+            <th>Fonte</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${itens.map(item => `
+            <tr>
+              <td><strong>${item.nome}</strong><br><small style="color:var(--cor-texto-claro)">${item.endereco_aproximado || ''}</small></td>
+              <td>${tipoLabel[item.tipo] || item.tipo}</td>
+              <td>${item.capacidade_valor != null ? `${item.capacidade_valor} ${item.capacidade_unidade}` : '—'}</td>
+              <td>
+                <span style="display:inline-flex;align-items:center;gap:0.3rem;">
+                  <span style="width:8px;height:8px;border-radius:50%;background:${certezaCores[item.certeza_nivel] || '#999'};display:inline-block;"></span>
+                  ${certezaLabels[item.certeza_nivel] || item.certeza_nivel}
+                </span>
+              </td>
+              <td>${statusLabels[item.status_operacional] || item.status_operacional}</td>
+              <td><a href="${item.fonte_url}" target="_blank" rel="noopener">${item.fonte_titulo ? item.fonte_titulo.substring(0, 50) + '...' : 'Ver fonte'}</a></td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    </div>
+  `;
+
+  container.innerHTML = html;
 }
 
-async function carregarDadosCidades() {
-    try {
-        const resposta = await fetch('data/cidades.json');
-        dadosCidades = await resposta.json();
-    } catch (erro) {
-        console.error('Erro ao carregar dados das cidades:', erro);
-    }
+// ── Renderização dos indicadores municipais ──────────────────────────────
+
+function renderizarIndicadores(indicadores) {
+  const container = document.getElementById('indicadores-container');
+  if (!container) return;
+
+  const linhas = [
+    { label: 'População total', valor: indicadores.populacao_total?.toLocaleString('pt-BR') + ' hab', fonte: indicadores.populacao_fonte },
+    { label: 'Cobertura água (urbana)', valor: indicadores.cobertura_agua_urbana_percentual + '%', fonte: indicadores.cobertura_agua_fonte },
+    { label: 'Cobertura esgoto (urbana)', valor: indicadores.cobertura_esgoto_urbana_percentual + '%', fonte: indicadores.cobertura_esgoto_fonte },
+    { label: 'Rede coletora', valor: indicadores.rede_coletora_km + ' km', fonte: indicadores.rede_coletora_fonte },
+    { label: 'Esgoto tratado', valor: indicadores.esgoto_tratado_milhoes_litros_dia + ' milhões L/dia', fonte: indicadores.esgoto_tratado_fonte },
+    { label: 'Consumo médio per capita', valor: indicadores.consumo_medio_litros_dia + ' L/hab/dia', fonte: indicadores.consumo_medio_fonte },
+    { label: 'Extensão rede água', valor: Number(indicadores.extensao_rede_agua_m).toLocaleString('pt-BR') + ' m', fonte: indicadores.extensao_rede_agua_fonte },
+    { label: 'Extensão rede esgoto', valor: Number(indicadores.extensao_rede_esgoto_m).toLocaleString('pt-BR') + ' m', fonte: indicadores.extensao_rede_esgoto_fonte },
+    { label: 'Ligações água', valor: Number(indicadores.conexoes_agua).toLocaleString('pt-BR'), fonte: indicadores.conexoes_agua_fonte },
+    { label: 'Ligações esgoto', valor: Number(indicadores.conexoes_esgoto).toLocaleString('pt-BR'), fonte: indicadores.conexoes_esgoto_fonte }
+  ];
+
+  container.innerHTML = `
+    <div class="tabela-responsiva">
+      <table>
+        <thead>
+          <tr><th>Indicador</th><th>Valor</th><th>Fonte</th></tr>
+        </thead>
+        <tbody>
+          ${linhas.map(l => `
+            <tr>
+              <td>${l.label}</td>
+              <td><strong>${l.valor}</strong></td>
+              <td><small style="color:var(--cor-texto-claro)">${l.fonte || '—'}</small></td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    </div>
+  `;
 }
 
-async function carregarDadosHistorico() {
-    try {
-        const resposta = await fetch('data/historico.json');
-        dadosHistorico = await resposta.json();
-    } catch (erro) {
-        console.error('Erro ao carregar histórico:', erro);
-    }
+// ── Renderização das fontes ───────────────────────────────────────────────
+
+function renderizarFontes(fontes) {
+  const container = document.getElementById('fontes-container');
+  if (!container) return;
+
+  container.innerHTML = fontes.map(f => `
+    <div class="fonte-item">
+      <h4>${f.titulo}</h4>
+      <p><strong>Autor:</strong> ${f.autor || '—'} | <strong>Tipo:</strong> ${f.tipo || '—'} | <strong>Data:</strong> ${f.data_publicacao || '—'}</p>
+      <p><strong>URL:</strong> <a href="${f.url}" target="_blank" rel="noopener">${f.url}</a></p>
+      <p><strong>Status de acesso:</strong> ${f.status_acesso || '—'}</p>
+      <p><strong>Acessado em:</strong> ${f.acessado_em || '—'}</p>
+      ${f.dados_extraidos && f.dados_extraidos.length > 0 ? `
+        <p><strong>Dados extraídos:</strong></p>
+        <ul>${f.dados_extraidos.map(d => `<li>${d}</li>`).join('')}</ul>
+      ` : ''}
+      ${f.observacao ? `<p style="color:var(--cor-aproximado);font-weight:600;">${f.observacao}</p>` : ''}
+    </div>
+  `).join('');
 }
 
-async function treinarModeloIA() {
-    if (!dadosHistorico || !dadosHistorico.historico) return;
-    
-    const dadosTreino = dadosHistorico.historico.map(registro => ({
-        ...registro,
-        populacao: dadosCidades.cidades.find(c => c.id === registro.cidade_id)?.populacao || 50000,
-        consumo_anterior: registro.consumo_m3 * 0.95
-    }));
-    
-    await criarModelo();
-    await treinarModelo(dadosTreino);
-}
+// ── Atualização do status da simulação ────────────────────────────────────
 
-function atualizarInterface(estado) {
-    renderizarCidades(Object.values(estado.cidades));
-    atualizarGraficos(estado);
-    atualizarPainelMetricas(estado);
-    atualizarPainelFormulas(estado);
-    atualizarListaEventos(estado);
-    
-    if (cidadeSelecionada) {
-        const cidadeAtualizada = estado.cidades[cidadeSelecionada.id];
-        if (cidadeAtualizada) {
-            atualizarPainelCidade(cidadeAtualizada);
-        }
-    }
-}
+function atualizarStatus(estado) {
+  if (!estado) return;
 
-function atualizarPainelMetricas(estado) {
-    const cidades = Object.values(estado.cidades);
-    
-    const demandaTotal = cidades.reduce((soma, c) => soma + c.demandaAtualM3, 0);
-    const producaoTotal = cidades.reduce((soma, c) => soma + c.producaoEfetivaM3, 0);
-    const reservatorioTotal = cidades.reduce((soma, c) => soma + c.nivel_atual_reservatorio_m3, 0);
-    const cidadesCriticas = cidades.filter(c => c.status === 'critico').length;
-    
-    const elementoDemanda = document.getElementById('metrica-demanda-total');
-    const elementoProducao = document.getElementById('metrica-producao-total');
-    const elementoReservatorio = document.getElementById('metrica-reservatorio-total');
-    const elementoCriticas = document.getElementById('metrica-cidades-criticas');
-    
-    if (elementoDemanda) elementoDemanda.textContent = demandaTotal.toLocaleString('pt-BR') + ' m³/dia';
-    if (elementoProducao) elementoProducao.textContent = producaoTotal.toLocaleString('pt-BR') + ' m³/dia';
-    if (elementoReservatorio) elementoReservatorio.textContent = reservatorioTotal.toLocaleString('pt-BR') + ' m³';
-    if (elementoCriticas) elementoCriticas.textContent = cidadesCriticas + ' cidade(s)';
-    
-    const elementoTempo = document.getElementById('tempo-simulacao');
-    if (elementoTempo) {
-        elementoTempo.textContent = `${estado.tempoSimulacao.dia}/${estado.tempoSimulacao.mes}/${estado.tempoSimulacao.ano}`;
-    }
-}
-
-function atualizarPainelFormulas(estado) {
-    const painel = document.getElementById('painel-formulas');
-    if (!painel) return;
-    
-    const cidades = Object.values(estado.cidades);
-    if (cidades.length === 0) return;
-    
-    const cidadeExemplo = cidades[0];
-    const relatorio = gerarRelatorioCidade({
-        ...cidadeExemplo,
-        populacao: cidadeExemplo.populacao,
-        consumo_medio_litros_dia: 150,
-        fator_industrial: cidadeExemplo.fator_industrial || 1.0
-    });
-    
-    painel.innerHTML = `
-        <div class="formula-item">
-            <h4>Cálculo de Demanda</h4>
-            <code>${relatorio.formulas.demanda}</code>
-        </div>
-        <div class="formula-item">
-            <h4>Produção Efetiva</h4>
-            <code>${relatorio.formulas.producaoEfetiva}</code>
-        </div>
-        <div class="formula-item">
-            <h4>Índice de Estresse Hídrico</h4>
-            <code>${relatorio.formulas.ieh}</code>
-        </div>
+  const el = document.getElementById('simulacao-status');
+  if (el) {
+    el.innerHTML = `
+      <strong>${estado.municipio}</strong> — Dia ${estado.tempoSimulacao}<br>
+      População: ${estado.populacao.toLocaleString('pt-BR')} hab |
+      Demanda: ${Math.round(estado.demandaAtual).toLocaleString('pt-BR')} m³/dia |
+      Produção: ${Math.round(estado.producaoEfetiva).toLocaleString('pt-BR')} m³/dia |
+      Reservatório: ${Math.round(estado.nivelReservatorio).toLocaleString('pt-BR')} m³
     `;
-}
+  }
 
-function atualizarListaEventos(estado) {
-    const lista = document.getElementById('lista-eventos');
-    if (!lista) return;
-    
-    const eventos = estado.historicoEventos.slice(-5).reverse();
-    
-    lista.innerHTML = eventos.map(e => `
-        <div class="evento-item">
-            <span class="evento-tipo">${formatarTipoEvento(e.tipo)}</span>
-            <span class="evento-tempo">${e.tempoSimulacao.dia}/${e.tempoSimulacao.mes}/${e.tempoSimulacao.ano}</span>
+  const listaEl = document.getElementById('lista-eventos');
+  if (listaEl && estado.historicoEventos) {
+    const eventos = estado.historicoEventos.slice(-10).reverse();
+    if (eventos.length === 0) {
+      listaEl.innerHTML = '<p class="evento-vazio">Nenhum evento registrado</p>';
+    } else {
+      const nomes = {
+        seca: 'Seca',
+        chuva_intensa: 'Chuva Intensa',
+        crescimento_populacional: 'Crescimento Pop.',
+        aumento_industrial: 'Aumento Industrial',
+        quebra_reservatorio: 'Quebra de Reservatório'
+      };
+      listaEl.innerHTML = eventos.map(e => `
+        <div class="evento-vazio" style="padding:0.3rem 0;border-bottom:1px solid var(--cor-borda);">
+          <strong>Dia ${e.dia}:</strong> ${nomes[e.evento] || e.evento}
         </div>
-    `).join('') || '<p>Nenhum evento registrado</p>';
-}
-
-function formatarTipoEvento(tipo) {
-    const nomes = {
-        'seca': 'Seca',
-        'chuva_intensa': 'Chuva Intensa',
-        'crescimento_populacional': 'Crescimento Pop.',
-        'aumento_industrial': 'Aumento Industrial',
-        'quebra_reservatorio': 'Quebra de Reservatório',
-        'cidade_sem_agua': 'Cidade sem Água'
-    };
-    return nomes[tipo] || tipo;
-}
-
-function aoSelecionarCidade(cidade) {
-    cidadeSelecionada = cidade;
-    atualizarPainelCidade(cidade);
-    centralizarEmCidade(cidade.id);
-}
-
-async function atualizarPainelCidade(cidade) {
-    const painel = document.getElementById('painel-cidade');
-    if (!painel) return;
-    
-    const relatorio = gerarRelatorioCidade({
-        ...cidade,
-        consumo_medio_litros_dia: 150
-    });
-    
-    const previsoes = await gerarPrevisoesFuturas(cidade, 7);
-    const confianca = calcularConfianca(previsoes);
-    
-    const dadosHistoricoGrafico = previsoes.map(p => p.demandaPrevista * 0.95);
-    const dadosPrevisao = previsoes.map(p => p.demandaPrevista);
-    atualizarGraficoPrevisao(dadosHistoricoGrafico, dadosPrevisao);
-    
-    painel.innerHTML = `
-        <h3>${cidade.nome}</h3>
-        <div class="cidade-metricas">
-            <div class="metrica">
-                <span class="label">População</span>
-                <span class="valor">${cidade.populacao.toLocaleString('pt-BR')}</span>
-            </div>
-            <div class="metrica">
-                <span class="label">Demanda</span>
-                <span class="valor">${cidade.demandaAtualM3.toLocaleString('pt-BR')} m³/dia</span>
-            </div>
-            <div class="metrica">
-                <span class="label">Produção</span>
-                <span class="valor">${cidade.producaoEfetivaM3.toLocaleString('pt-BR')} m³/dia</span>
-            </div>
-            <div class="metrica">
-                <span class="label">Reservatório</span>
-                <span class="valor">${cidade.nivel_atual_reservatorio_m3.toLocaleString('pt-BR')} m³</span>
-            </div>
-            <div class="metrica">
-                <span class="label">Status</span>
-                <span class="valor status-${cidade.status}">${cidade.status.toUpperCase()}</span>
-            </div>
-            <div class="metrica">
-                <span class="label">Confiança IA</span>
-                <span class="valor">${confianca}%</span>
-            </div>
-        </div>
-        <div class="cidade-controles">
-            <label>Nível do Reservatório:</label>
-            <input type="range" id="controle-reservatorio" min="0" max="${cidade.capacidade_reservatorio_m3}" 
-                   value="${cidade.nivel_atual_reservatorio_m3}" step="100">
-            <span id="valor-reservatorio">${cidade.nivel_atual_reservatorio_m3.toLocaleString('pt-BR')} m³</span>
-        </div>
-    `;
-    
-    const slider = document.getElementById('controle-reservatorio');
-    if (slider) {
-        slider.addEventListener('input', (e) => {
-            const novoNivel = parseInt(e.target.value);
-            document.getElementById('valor-reservatorio').textContent = novoNivel.toLocaleString('pt-BR') + ' m³';
-            definirNivelReservatorio(cidade.id, novoNivel);
-        });
+      `).join('');
     }
+  }
 }
 
-function configurarEventosInterface() {
-    document.getElementById('btn-seca')?.addEventListener('click', () => {
-        simularEvento('seca', cidadeSelecionada?.id, { intensidade: 0.4 });
-        verificarRedistribuicaoAutomatica();
-    });
-    
-    document.getElementById('btn-chuva')?.addEventListener('click', () => {
-        simularEvento('chuva_intensa', cidadeSelecionada?.id, { intensidade: 1.4 });
-    });
-    
-    document.getElementById('btn-crescimento')?.addEventListener('click', () => {
-        simularEvento('crescimento_populacional', cidadeSelecionada?.id, { taxa: 0.1 });
-        verificarRedistribuicaoAutomatica();
-    });
-    
-    document.getElementById('btn-industrial')?.addEventListener('click', () => {
-        simularEvento('aumento_industrial', cidadeSelecionada?.id, { fator: 0.15 });
-        verificarRedistribuicaoAutomatica();
-    });
-    
-    document.getElementById('btn-quebra')?.addEventListener('click', () => {
-        simularEvento('quebra_reservatorio', cidadeSelecionada?.id, { percentualPerda: 0.5 });
-        verificarRedistribuicaoAutomatica();
-    });
-    
-    document.getElementById('btn-sem-agua')?.addEventListener('click', () => {
-        simularEvento('cidade_sem_agua', cidadeSelecionada?.id);
-        verificarRedistribuicaoAutomatica();
-    });
-    
-    document.getElementById('btn-redistribuir')?.addEventListener('click', () => {
-        const resultado = executarRedistribuicao();
-        mostrarNotificacao(`Redistribuição concluída: ${resultado.volumeTotalTransferido.toLocaleString('pt-BR')} m³ transferidos`);
-    });
-    
-    document.getElementById('btn-avancar-hora')?.addEventListener('click', () => {
-        avancarTempo('hora', 1);
-    });
-    
-    document.getElementById('btn-avancar-dia')?.addEventListener('click', () => {
-        avancarTempo('dia', 1);
-        verificarRedistribuicaoAutomatica();
-    });
-    
-    document.getElementById('btn-avancar-mes')?.addEventListener('click', () => {
-        avancarTempo('mes', 1);
-        verificarRedistribuicaoAutomatica();
-    });
-    
-    document.getElementById('btn-avancar-ano')?.addEventListener('click', () => {
-        avancarTempo('ano', 1);
-        verificarRedistribuicaoAutomatica();
-    });
-    
-    document.getElementById('btn-reiniciar')?.addEventListener('click', () => {
-        location.reload();
-    });
-}
-
-function verificarRedistribuicaoAutomatica() {
-    const necessidade = verificarNecessidadeRedistribuicao();
-    
-    if (necessidade.necessitaRedistribuicao) {
-        const resultado = executarRedistribuicao();
-        if (resultado.volumeTotalTransferido > 0) {
-            mostrarNotificacao(`Redistribuição automática: ${resultado.volumeTotalTransferido.toLocaleString('pt-BR')} m³`, 'info');
-        }
-    }
-}
+// ── Notificações ──────────────────────────────────────────────────────────
 
 function mostrarNotificacao(mensagem, tipo = 'success') {
-    const container = document.getElementById('notificacoes');
-    if (!container) return;
-    
-    const notificacao = document.createElement('div');
-    notificacao.className = `notificacao notificacao-${tipo}`;
-    notificacao.textContent = mensagem;
-    
-    container.appendChild(notificacao);
-    
-    setTimeout(() => {
-        notificacao.remove();
-    }, 3000);
+  const container = document.getElementById('notificacoes');
+  if (!container) return;
+
+  const notif = document.createElement('div');
+  notif.className = `notificacao notificacao-${tipo}`;
+  notif.textContent = mensagem;
+  container.appendChild(notif);
+
+  setTimeout(() => notif.remove(), 3500);
 }
 
-document.addEventListener('DOMContentLoaded', inicializar);
+// ── Inicialização ─────────────────────────────────────────────────────────
 
-export {
-    inicializar,
-    aoSelecionarCidade,
-    mostrarNotificacao
-};
+document.addEventListener('DOMContentLoaded', async () => {
+  try {
+    const dados = await carregarDados();
+
+    // Mapa
+    inicializarMapa('mapa');
+    renderizarInfraestrutura(dados.infraestrutura);
+
+    // Tabela de infraestrutura
+    renderizarTabela(dados.infraestrutura);
+
+    // Indicadores municipais
+    renderizarIndicadores(dados.indicadores);
+
+    // Fontes
+    renderizarFontes(dados.fontes);
+
+    // Gráficos
+    inicializarGraficos();
+
+    // Simulação
+    inicializarSimulacao();
+
+    // Assinar atualizações da simulação
+    inscrever((estado) => {
+      atualizarGraficoSimulacao(estado);
+      atualizarGraficoProducaoDemanda(estado);
+      atualizarStatus(estado);
+    });
+
+    // ── Eventos da simulação ──
+
+    document.getElementById('btn-seca')?.addEventListener('click', () => {
+      simularEvento('seca');
+      mostrarNotificacao('Evento simulado: Seca — produção reduzida em 40%', 'info');
+    });
+
+    document.getElementById('btn-chuva')?.addEventListener('click', () => {
+      simularEvento('chuva_intensa');
+      mostrarNotificacao('Evento simulado: Chuva Intensa — produção aumentada em 40%', 'info');
+    });
+
+    document.getElementById('btn-crescimento')?.addEventListener('click', () => {
+      simularEvento('crescimento_populacional');
+      mostrarNotificacao('Evento simulado: Crescimento Populacional +2%', 'info');
+    });
+
+    document.getElementById('btn-industrial')?.addEventListener('click', () => {
+      simularEvento('aumento_industrial');
+      mostrarNotificacao('Evento simulado: Aumento Industrial +15%', 'info');
+    });
+
+    document.getElementById('btn-quebra')?.addEventListener('click', () => {
+      simularEvento('quebra_reservatorio');
+      mostrarNotificacao('Evento simulado: Quebra de Reservatório — perda de 10%', 'info');
+    });
+
+    // ── Controle de tempo ──
+
+    document.getElementById('btn-avancar-dia')?.addEventListener('click', () => {
+      avancarTempo(1);
+    });
+
+    document.getElementById('btn-avancar-mes')?.addEventListener('click', () => {
+      avancarTempo(30);
+    });
+
+    document.getElementById('btn-avancar-ano')?.addEventListener('click', () => {
+      avancarTempo(365);
+    });
+
+    document.getElementById('btn-reiniciar')?.addEventListener('click', () => {
+      reiniciarSimulacao();
+      mostrarNotificacao('Simulação reiniciada', 'success');
+    });
+
+  } catch (erro) {
+    console.error('Falha na inicialização:', erro);
+    mostrarNotificacao('Erro ao carregar dados. Verifique o console.', 'error');
+  }
+});

@@ -1,249 +1,73 @@
-import { obterTodasCidades, obterEstado } from './simulador.js';
+// Gráficos analíticos para Rio Verde
 
-let graficoDemanda = null;
-let graficoProducao = null;
-let graficoFluxos = null;
-let graficoPrevisao = null;
+let chartProducaoDemanda = null;
+let chartSimulacao = null;
 
-function inicializarGraficos() {
-    criarGraficoDemanda();
-    criarGraficoProducao();
-    criarGraficoFluxos();
-    criarGraficoPrevisao();
-}
-
-function criarGraficoDemanda() {
-    const ctx = document.getElementById('grafico-demanda');
-    if (!ctx) return;
-    
-    graficoDemanda = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: [],
-            datasets: [{
-                label: 'Demanda (m³/dia)',
-                data: [],
-                backgroundColor: 'rgba(220, 53, 69, 0.7)',
-                borderColor: 'rgba(220, 53, 69, 1)',
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                title: {
-                    display: true,
-                    text: 'Demanda de Água por Cidade',
-                    font: { size: 14 }
-                },
-                legend: {
-                    display: false
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    title: {
-                        display: true,
-                        text: 'm³/dia'
-                    }
-                }
-            }
+export function inicializarGraficos() {
+  // Bar chart: capacidades e demanda
+  const ctxBar = document.getElementById('grafico-producao-demanda')?.getContext('2d');
+  if (ctxBar) {
+    chartProducaoDemanda = new Chart(ctxBar, {
+      type: 'bar',
+      data: {
+        labels: ['ETA Abóbora (capacidade)', 'ETA Rio Verdinho (capacidade)', 'Demanda atual'],
+        datasets: [{
+          label: 'Valores (m³/d)',
+          data: [10368, 69120, 36224],
+          backgroundColor: ['#2e7d32', '#1976d2', '#f57c00']
+        }]
+      },
+      options: {
+        responsive: true,
+        animation: false,
+        scales: {
+          y: { beginAtZero: true }
         }
+      }
     });
-}
+  }
 
-function criarGraficoProducao() {
-    const ctx = document.getElementById('grafico-producao');
-    if (!ctx) return;
-    
-    graficoProducao = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: [],
-            datasets: [
-                {
-                    label: 'Produção (m³/dia)',
-                    data: [],
-                    backgroundColor: 'rgba(40, 167, 69, 0.7)',
-                    borderColor: 'rgba(40, 167, 69, 1)',
-                    borderWidth: 1
-                },
-                {
-                    label: 'Demanda (m³/dia)',
-                    data: [],
-                    backgroundColor: 'rgba(255, 193, 7, 0.7)',
-                    borderColor: 'rgba(255, 193, 7, 1)',
-                    borderWidth: 1
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                title: {
-                    display: true,
-                    text: 'Produção vs Demanda',
-                    font: { size: 14 }
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    title: {
-                        display: true,
-                        text: 'm³/dia'
-                    }
-                }
-            }
+  const ctxLine = document.getElementById('grafico-simulacao')?.getContext('2d');
+  if (ctxLine) {
+    chartSimulacao = new Chart(ctxLine, {
+      type: 'line',
+      data: {
+        labels: [],
+        datasets: [
+          { label: 'Produção (m³/d)', data: [], borderColor: '#2e7d32', fill: false },
+          { label: 'Demanda (m³/d)', data: [], borderColor: '#f44336', fill: false },
+          { label: 'Reservatório (m³)', data: [], borderColor: '#2196f3', fill: false }
+        ]
+      },
+      options: {
+        responsive: true,
+        animation: false,
+        scales: {
+          x: { display: true, title: { display: true, text: 'Tempo (dias)' } },
+          y: { beginAtZero: true }
         }
+      }
     });
+  }
 }
 
-function criarGraficoFluxos() {
-    const ctx = document.getElementById('grafico-fluxos');
-    if (!ctx) return;
-    
-    graficoFluxos = new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-            labels: [],
-            datasets: [{
-                data: [],
-                backgroundColor: [
-                    'rgba(0, 123, 255, 0.7)',
-                    'rgba(40, 167, 69, 0.7)',
-                    'rgba(255, 193, 7, 0.7)',
-                    'rgba(220, 53, 69, 0.7)',
-                    'rgba(108, 117, 125, 0.7)',
-                    'rgba(23, 162, 184, 0.7)'
-                ]
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                title: {
-                    display: true,
-                    text: 'Distribuição de Reservatórios',
-                    font: { size: 14 }
-                }
-            }
-        }
-    });
+export function atualizarGraficoSimulacao(estado) {
+  if (!chartSimulacao) return;
+  const dia = (estado.tempoSimulacao ?? chartSimulacao.data.labels.length) + 1;
+  chartSimulacao.data.labels.push(dia.toString());
+  chartSimulacao.data.datasets[0].data.push(estado.producaoEfetiva);
+  chartSimulacao.data.datasets[1].data.push(estado.demandaAtual);
+  chartSimulacao.data.datasets[2].data.push(estado.nivelReservatorio);
+  if (chartSimulacao.data.labels.length > 50) {
+    chartSimulacao.data.labels.shift();
+    chartSimulacao.data.datasets.forEach(ds => ds.data.shift());
+  }
+  chartSimulacao.update();
 }
 
-function criarGraficoPrevisao() {
-    const ctx = document.getElementById('grafico-previsao');
-    if (!ctx) return;
-    
-    graficoPrevisao = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: [],
-            datasets: [
-                {
-                    label: 'Demanda Real',
-                    data: [],
-                    borderColor: 'rgba(220, 53, 69, 1)',
-                    backgroundColor: 'rgba(220, 53, 69, 0.1)',
-                    tension: 0.3,
-                    fill: true
-                },
-                {
-                    label: 'Previsão IA',
-                    data: [],
-                    borderColor: 'rgba(0, 123, 255, 1)',
-                    backgroundColor: 'rgba(0, 123, 255, 0.1)',
-                    borderDash: [5, 5],
-                    tension: 0.3,
-                    fill: false
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                title: {
-                    display: true,
-                    text: 'Previsão de Demanda (IA)',
-                    font: { size: 14 }
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: false,
-                    title: {
-                        display: true,
-                        text: 'm³/dia'
-                    }
-                }
-            }
-        }
-    });
+export function atualizarGraficoProducaoDemanda(estado) {
+  if (!chartProducaoDemanda) return;
+  chartProducaoDemanda.data.datasets[0].data = [estado.producaoBruta, estado.producaoEfetiva];
+  chartProducaoDemanda.data.labels = ['Producao Bruta (ETA Abóbora)', 'Producao Efetiva (Rio Verde)'];
+  chartProducaoDemanda.update();
 }
-
-function atualizarGraficos(estado) {
-    const cidades = Object.values(estado.cidades);
-    
-    atualizarGraficoDemanda(cidades);
-    atualizarGraficoProducao(cidades);
-    atualizarGraficoFluxos(cidades);
-}
-
-function atualizarGraficoDemanda(cidades) {
-    if (!graficoDemanda) return;
-    
-    graficoDemanda.data.labels = cidades.map(c => c.nome);
-    graficoDemanda.data.datasets[0].data = cidades.map(c => c.demandaAtualM3);
-    graficoDemanda.update('none');
-}
-
-function atualizarGraficoProducao(cidades) {
-    if (!graficoProducao) return;
-    
-    graficoProducao.data.labels = cidades.map(c => c.nome);
-    graficoProducao.data.datasets[0].data = cidades.map(c => c.producaoEfetivaM3);
-    graficoProducao.data.datasets[1].data = cidades.map(c => c.demandaAtualM3);
-    graficoProducao.update('none');
-}
-
-function atualizarGraficoFluxos(cidades) {
-    if (!graficoFluxos) return;
-    
-    graficoFluxos.data.labels = cidades.map(c => c.nome);
-    graficoFluxos.data.datasets[0].data = cidades.map(c => c.nivel_atual_reservatorio_m3);
-    graficoFluxos.update('none');
-}
-
-function atualizarGraficoPrevisao(dadosHistorico, previsoes) {
-    if (!graficoPrevisao) return;
-    
-    const labels = dadosHistorico.map((d, i) => `Dia ${i + 1}`);
-    
-    graficoPrevisao.data.labels = labels;
-    graficoPrevisao.data.datasets[0].data = dadosHistorico;
-    graficoPrevisao.data.datasets[1].data = previsoes;
-    graficoPrevisao.update('none');
-}
-
-function destruirGraficos() {
-    if (graficoDemanda) graficoDemanda.destroy();
-    if (graficoProducao) graficoProducao.destroy();
-    if (graficoFluxos) graficoFluxos.destroy();
-    if (graficoPrevisao) graficoPrevisao.destroy();
-}
-
-export {
-    inicializarGraficos,
-    atualizarGraficos,
-    atualizarGraficoDemanda,
-    atualizarGraficoProducao,
-    atualizarGraficoFluxos,
-    atualizarGraficoPrevisao,
-    destruirGraficos
-};

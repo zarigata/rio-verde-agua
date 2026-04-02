@@ -3,183 +3,256 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plataforma de Gestão Hídrica Urbana - Rio Verde</title>
-    <meta name="description" content="Sistema de simulação e gerenciamento de abastecimento de água entre cidades">
-    
+    <title>Abastecimento de Água no Município de Rio Verde/GO</title>
+    <meta name="description" content="Análise da infraestrutura hídrica do município de Rio Verde, Goiás — Trabalho de Conclusão de Curso">
+
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+
     <header class="cabecalho">
         <div class="cabecalho-conteudo">
-            <h1>💧 Plataforma de Gestão Hídrica Urbana</h1>
-            <p class="subtitulo">Sistema Inteligente de Gerenciamento de Água - Região de Rio Verde/GO</p>
-        </div>
-        <div class="cabecalho-tempo">
-            <span>Data da Simulação:</span>
-            <strong id="tempo-simulacao">1/1/2024</strong>
+            <h1>Abastecimento de Água no Município de Rio Verde/GO</h1>
+            <p class="subtitulo">Análise da Infraestrutura Hídrica &mdash; Trabalho de Conclusão de Curso</p>
         </div>
     </header>
 
-    <main class="principal">
-        <aside class="barra-lateral">
-            <section class="painel painel-metricas">
-                <h2>📊 Métricas do Sistema</h2>
-                <div class="metricas-grid">
-                    <div class="metrica-card">
-                        <span class="metrica-label">Demanda Total</span>
-                        <span id="metrica-demanda-total" class="metrica-valor">-- m³/dia</span>
-                    </div>
-                    <div class="metrica-card">
-                        <span class="metrica-label">Produção Total</span>
-                        <span id="metrica-producao-total" class="metrica-valor">-- m³/dia</span>
-                    </div>
-                    <div class="metrica-card">
-                        <span class="metrica-label">Reservatório Total</span>
-                        <span id="metrica-reservatorio-total" class="metrica-valor">-- m³</span>
-                    </div>
-                    <div class="metrica-card alerta">
-                        <span class="metrica-label">Cidades Críticas</span>
-                        <span id="metrica-cidades-criticas" class="metrica-valor">0</span>
-                    </div>
-                </div>
-            </section>
+    <nav class="navegacao" id="navegacao">
+        <ul class="nav-lista">
+            <li><a href="#introducao">Introdução</a></li>
+            <li><a href="#metodologia">Metodologia</a></li>
+            <li><a href="#mapa-section">Mapa</a></li>
+            <li><a href="#infraestrutura">Infraestrutura</a></li>
+            <li><a href="#indicadores">Indicadores</a></li>
+            <li><a href="#simulacao">Simulação</a></li>
+            <li><a href="#fontes">Fontes</a></li>
+            <li><a href="#referencias">Referências</a></li>
+        </ul>
+    </nav>
 
-            <section class="painel painel-eventos">
-                <h2>⚡ Simular Eventos</h2>
-                <div class="botoes-eventos">
-                    <button id="btn-seca" class="btn btn-evento btn-seca">
-                        🏜️ Seca
-                    </button>
-                    <button id="btn-chuva" class="btn btn-evento btn-chuva">
-                        🌧️ Chuva Intensa
-                    </button>
-                    <button id="btn-crescimento" class="btn btn-evento btn-crescimento">
-                        📈 Crescimento Populacional
-                    </button>
-                    <button id="btn-industrial" class="btn btn-evento btn-industrial">
-                        🏭 Aumento Industrial
-                    </button>
-                    <button id="btn-quebra" class="btn btn-evento btn-quebra">
-                        💥 Quebra de Reservatório
-                    </button>
-                    <button id="btn-sem-agua" class="btn btn-evento btn-critico">
-                        🚫 Cidade sem Água
-                    </button>
-                </div>
-                <div class="info-evento">
-                    <small>Selecione uma cidade no mapa antes de aplicar eventos específicos</small>
-                </div>
-            </section>
+    <main class="conteudo">
 
-            <section class="painel painel-tempo">
-                <h2>⏱️ Controle de Tempo</h2>
-                <div class="botoes-tempo">
-                    <button id="btn-avancar-hora" class="btn btn-tempo">+1 Hora</button>
-                    <button id="btn-avancar-dia" class="btn btn-tempo">+1 Dia</button>
-                    <button id="btn-avancar-mes" class="btn btn-tempo">+1 Mês</button>
-                    <button id="btn-avancar-ano" class="btn btn-tempo">+1 Ano</button>
-                </div>
-            </section>
+        <section id="introducao" class="secao">
+            <h2>Introdução</h2>
+            <p>
+                O município de Rio Verde, localizado no sudoeste do estado de Goiás, destaca-se
+                como um dos polos econômicos mais expressivos da região Centro-Oeste brasileira.
+                Com população estimada em 241.494 habitantes (IBGE, 2025), o município enfrenta
+                desafios crescentes relacionados ao abastecimento de água, impulsionados pelo
+                crescimento urbano, pela atividade agroindustrial e pelas variações climáticas
+                características do bioma Cerrado.
+            </p>
+            <p>
+                A concessionária responsável pelos serviços de saneamento básico é a Saneago,
+                que opera a infraestrutura existente de captação, tratamento e distribuição de
+                água. Dentre os ativos operacionais, destacam-se a Estação de Tratamento de Água
+                (ETA) Abóbora, com capacidade de 120 L/s, e a Estação de Tratamento de Esgoto
+                (ETE) Chapadinha, com tecnologia MBBR e capacidade de 58 L/s. Além disso, o
+                município beneficiar-se-á do novo sistema Rio Verdinho, atualmente em construção,
+                que ampliará significativamente a capacidade de tratamento para 800 L/s.
+            </p>
+            <p>
+                O presente Trabalho de Conclusão de Curso propõe uma análise integrada da
+                infraestrutura hídrica municipal, combinando dados oficiais da Saneago (2023) e
+                da Câmara Municipal de Rio Verde (2024) com ferramentas de simulação computacional.
+                A simulação de cenários permite avaliar o impacto de eventos críticos &mdash; como
+                períodos de seca, crescimento populacional e rupturas operacionais &mdash; sobre
+                a capacidade de atendimento à demanda, contribuindo para o planejamento de políticas
+                públicas de gestão de recursos hídricos.
+            </p>
+        </section>
 
-            <section class="painel painel-redistribuicao">
-                <h2>🔄 Redistribuição</h2>
-                <button id="btn-redistribuir" class="btn btn-redistribuir">
-                    Executar Redistribuição Automática
-                </button>
-                <p class="info-redistribuicao">
-                    O sistema transfere água automaticamente de cidades com excedente para cidades em déficit.
-                </p>
-            </section>
+        <section id="metodologia" class="secao">
+            <h2>Metodologia</h2>
+            <p>
+                Os dados utilizados neste trabalho foram obtidos a partir de duas fontes primárias:
+                relatório institucional da Saneago, publicado em agosto de 2023, e matéria
+                jornalística da Câmara Municipal de Rio Verde, publicada em outubro de 2024, que
+                descreve o lançamento das obras do novo sistema de abastecimento Rio Verdinho.
+            </p>
+            <h3>Coordenadas Geográficas</h3>
+            <p>
+                As coordenadas geográficas apresentadas neste trabalho foram obtidas por meio de
+                <strong>geocodificação aproximada</strong> a partir de nomes de bairros, endereços
+                de referência e cursos d'água. <strong>As coordenadas não foram confirmadas por
+                levantamento GPS em campo</strong>. Cada ponto de infraestrutura possui um nível
+                de certeza classificado em três categorias:
+            </p>
+            <ul>
+                <li><strong>Confirmado</strong> &mdash; coordenada verificada por mais de uma fonte ou por dado oficial.</li>
+                <li><strong>Derivado</strong> &mdash; coordenada estimada a partir de referência indireta (bairro, endereço aproximado).</li>
+                <li><strong>Aproximado</strong> &mdash; coordenada estimada com baixa precisão, sujeita a desvio significativo.</li>
+            </ul>
+            <h3>Simulação de Cenários</h3>
+            <p>
+                A simulação utiliza fórmulas hidrológicas baseadas nas normas da ABNT (NBR 12211
+                e NBR 12218) para o cálculo de demanda, produção efetiva e balanço hídrico.
+                Os cenários simulados incluem eventos de seca, chuva intensa, crescimento
+                populacional, aumento industrial e quebra de reservatório, permitindo a análise
+                de vulnerabilidades no sistema de abastecimento.
+            </p>
+        </section>
 
-            <section class="painel painel-acoes">
-                <button id="btn-reiniciar" class="btn btn-reiniciar">
-                    🔄 Reiniciar Simulação
-                </button>
-            </section>
-        </aside>
-
-        <div class="area-central">
-            <section class="painel painel-mapa">
-                <h2>🗺️ Mapa das Cidades</h2>
-                <div id="mapa" class="mapa-container"></div>
-                <div class="legenda-mapa">
-                    <span class="legenda-item"><span class="cor normal"></span> Normal</span>
-                    <span class="legenda-item"><span class="cor pressao"></span> Pressão</span>
-                    <span class="legenda-item"><span class="cor critico"></span> Crítico</span>
-                </div>
-            </section>
-
-            <div class="area-graficos">
-                <section class="painel painel-grafico">
-                    <div class="grafico-container">
-                        <canvas id="grafico-demanda"></canvas>
-                    </div>
-                </section>
-
-                <section class="painel painel-grafico">
-                    <div class="grafico-container">
-                        <canvas id="grafico-producao"></canvas>
-                    </div>
-                </section>
+        <section id="mapa-section" class="secao">
+            <h2>Mapa Interativo</h2>
+            <p class="secao-descricao">
+                Distribuição geográfica dos ativos de infraestrutura hídrica. Os marcadores
+                indicam o tipo de instalação e o nível de certeza das coordenadas.
+            </p>
+            <div id="mapa" class="mapa-container"></div>
+            <div class="legenda-mapa" id="legenda-mapa">
+                <span class="legenda-titulo">Legenda:</span>
+                <span class="legenda-item">
+                    <span class="legenda-cor legenda-captacao"></span> Captação
+                </span>
+                <span class="legenda-item">
+                    <span class="legenda-cor legenda-tratamento"></span> Tratamento
+                </span>
+                <span class="legenda-item">
+                    <span class="legenda-cor legenda-reservacao"></span> Reservação
+                </span>
+                <span class="legenda-item">
+                    <span class="legenda-cor legenda-distribuicao"></span> Distribuição
+                </span>
+                <span class="legenda-item">
+                    <span class="legenda-cor legenda-esgoto"></span> Tratamento de Esgoto
+                </span>
+                <span class="legenda-separador">|</span>
+                <span class="legenda-item">
+                    <span class="legenda-cor legenda-confirmado"></span> Confirmado
+                </span>
+                <span class="legenda-item">
+                    <span class="legenda-cor legenda-derivado"></span> Derivado
+                </span>
+                <span class="legenda-item">
+                    <span class="legenda-cor legenda-aproximado"></span> Aproximado
+                </span>
             </div>
-        </div>
+        </section>
 
-        <aside class="barra-lateral-direita">
-            <section class="painel painel-cidade" id="painel-cidade">
-                <h2>🏙️ Cidade Selecionada</h2>
-                <p class="info-selecao">Clique em uma cidade no mapa para ver detalhes</p>
-            </section>
+        <section id="infraestrutura" class="secao">
+            <h2>Infraestrutura Hídrica</h2>
+            <p class="secao-descricao">
+                Relação dos ativos de infraestrutura identificados no município de Rio Verde,
+                com capacidade operacional, operadora responsável e status atual.
+            </p>
+            <div id="tabela-infraestrutura"></div>
+        </section>
 
-            <section class="painel painel-formulas" id="painel-formulas">
-                <h2>📐 Fórmulas Científicas</h2>
-                <div class="formula-item">
-                    <h4>Cálculo de Demanda</h4>
-                    <code>Demanda = População × Consumo(L/hab/dia) ÷ 1000</code>
-                </div>
-                <div class="formula-item">
-                    <h4>Produção Efetiva</h4>
-                    <code>Prod.Efetiva = Prod.Bruta × (100% - Perda%)</code>
-                </div>
-                <div class="formula-item">
-                    <h4>Índice de Estresse Hídrico</h4>
-                    <code>IEH = Demanda / Disponibilidade</code>
-                </div>
-                <div class="formula-item">
-                    <h4>Balanço Hídrico</h4>
-                    <code>Balanço = Produção - Demanda + Reservatório</code>
-                </div>
-            </section>
+        <section id="indicadores" class="secao">
+            <h2>Indicadores Municipais</h2>
+            <p class="secao-descricao">
+                Indicadores de saneamento básico do município de Rio Verde, conforme dados
+                da Saneago (2023) e do IBGE.
+            </p>
+            <div id="indicadores-container"></div>
+        </section>
 
-            <section class="painel painel-grafico-previsao">
-                <h2>🤖 Previsão IA</h2>
-                <div class="grafico-container">
-                    <canvas id="grafico-previsao"></canvas>
-                </div>
-            </section>
+        <section id="simulacao" class="secao">
+            <h2>Simulação de Cenários</h2>
+            <p class="secao-descricao">
+                Ferramenta de simulação para análise do impacto de eventos críticos sobre o
+                sistema de abastecimento. Os cálculos seguem fórmulas hidrológicas das normas
+                ABNT NBR 12211 e NBR 12218.
+            </p>
 
-            <section class="painel painel-eventos-historico">
-                <h2>📜 Histórico de Eventos</h2>
-                <div id="lista-eventos" class="lista-eventos">
-                    <p>Nenhum evento registrado</p>
+            <div class="simulacao-layout">
+                <div class="simulacao-controles">
+                    <h3>Eventos</h3>
+                    <div class="botoes-eventos">
+                        <button id="btn-seca" class="btn btn-outline" type="button">Seca</button>
+                        <button id="btn-chuva" class="btn btn-outline" type="button">Chuva Intensa</button>
+                        <button id="btn-crescimento" class="btn btn-outline" type="button">Crescimento Populacional</button>
+                        <button id="btn-industrial" class="btn btn-outline" type="button">Aumento Industrial</button>
+                        <button id="btn-quebra" class="btn btn-outline" type="button">Quebra de Reservatório</button>
+                    </div>
+
+                    <h3>Controle de Tempo</h3>
+                    <div class="botoes-tempo">
+                        <button id="btn-avancar-dia" class="btn btn-outline" type="button">+1 Dia</button>
+                        <button id="btn-avancar-mes" class="btn btn-outline" type="button">+1 Mês</button>
+                        <button id="btn-avancar-ano" class="btn btn-outline" type="button">+1 Ano</button>
+                    </div>
+
+                    <div class="simulacao-status">
+                        <div id="simulacao-status" class="status-texto">Simulação inicializada</div>
+                        <button id="btn-reiniciar" class="btn btn-outline btn-reiniciar" type="button">Reiniciar Simulação</button>
+                    </div>
+
+                    <h3>Histórico de Eventos</h3>
+                    <div id="lista-eventos" class="lista-eventos">
+                        <p class="evento-vazio">Nenhum evento registrado</p>
+                    </div>
                 </div>
-            </section>
-        </aside>
+
+                <div class="simulacao-graficos">
+                    <div class="grafico-wrapper">
+                        <h3>Produção e Demanda</h3>
+                        <canvas id="grafico-producao-demanda"></canvas>
+                    </div>
+                    <div class="grafico-wrapper">
+                        <h3>Evolução da Simulação</h3>
+                        <canvas id="grafico-simulacao"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="fontes" class="secao">
+            <h2>Notas sobre as Fontes</h2>
+            <p class="secao-descricao">
+                Detalhamento das fontes consultadas, incluindo data de acesso, tipo de
+                publicação e dados extraídos de cada uma.
+            </p>
+            <div id="fontes-container"></div>
+        </section>
+
+        <section id="referencias" class="secao">
+            <h2>Referências</h2>
+            <ol class="lista-referencias">
+                <li>
+                    SANEAGO. <em>Prefeito e diretoria da Saneago realizam visita técnica em unidades de Rio Verde</em>.
+                    São Paulo: Saneago, 2023. Disponível em: https://www.saneago.com.br/#/noticia_interna/9868/3.
+                    Acesso em: 02 abr. 2026.
+                </li>
+                <li>
+                    CÂMARA MUNICIPAL DE RIO VERDE. <em>Prefeitura, Saneago e Governo de Goiás lançam as obras do novo sistema de abastecimento de água Rio Verdinho</em>.
+                    Rio Verde: Câmara Municipal, 2024. Disponível em: https://rioverde.go.leg.br/prefeitura-saneago-e-governo-de-goias-lancam-as-obras-do-novo-sistema-de-abastecimento-de-agua-rio-verdinho/.
+                    Acesso em: 02 abr. 2026.
+                </li>
+                <li>
+                    IBGE. <em>Estimativas da população</em>.
+                    Rio de Janeiro: IBGE, 2025. Disponível em: https://www.ibge.gov.br/.
+                    Acesso em: 02 abr. 2026.
+                </li>
+                <li>
+                    ASSOCIAÇÃO BRASILEIRA DE NORMAS TÉCNICAS. <em>NBR 12211: Estudos de concepção de sistemas de abastecimento de água</em>.
+                    Rio de Janeiro: ABNT, 1992.
+                </li>
+                <li>
+                    ASSOCIAÇÃO BRASILEIRA DE NORMAS TÉCNICAS. <em>NBR 12218: Projeto de rede de distribuição de água para abastecimento público</em>.
+                    Rio de Janeiro: ABNT, 1994.
+                </li>
+            </ol>
+        </section>
+
     </main>
 
     <footer class="rodape">
         <div class="rodape-conteudo">
             <p>
-                <strong>Plataforma de Gestão Hídrica Urbana</strong> - 
+                <strong>Abastecimento de Água no Município de Rio Verde/GO</strong> &mdash;
                 Trabalho de Conclusão de Curso
             </p>
             <p>
-                Dados baseados em Rio Verde e cidades vizinhas - Goiás, Brasil
+                Dados obtidos a partir de fontes públicas (Saneago, 2023; Câmara Municipal, 2024; IBGE, 2025).
             </p>
-            <p class="dados-reais">
-                População Total: 402.000 habitantes | 
-                Consumo médio: 150 L/hab/dia | 
-                Coeficiente de perda: 25%
+            <p class="rodape-nota">
+                Nota sobre coordenadas: As coordenadas apresentadas neste site foram obtidas por
+                geocodificação aproximada e <strong>não foram confirmadas por levantamento GPS</strong>.
+                Devem ser utilizadas exclusivamente para fins de visualização e análise acadêmica,
+                não substituindo levantamentos topográficos ou georreferenciados.
             </p>
         </div>
     </footer>
@@ -188,7 +261,6 @@
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.10.0/dist/tf.min.js"></script>
     <script type="module" src="js/app.js"></script>
 </body>
 </html>
