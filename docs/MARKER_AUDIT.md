@@ -82,7 +82,11 @@ Os seguintes marcadores foram **removidos** por estarem fora do escopo municipal
 
 ---
 
-## Limitações das Coordenadas
+## Pontos do Simulador vs. Marcadores do Mapa
+
+O simulador de transferencia (`simulador.html`) utiliza 9 pontos definidos em `data/pontos-simulacao.json`. Estes pontos **nao sao os mesmos** que os marcadores do mapa interativo (`mapa.html`). O simulador inclui zonas de abastecimento estimadas (Setor Sul, Setor Norte, Setor Oeste) e volumes de mananciais estimados que nao sao exibidos como marcadores no mapa. A proveniencia dos pontos do simulador esta documentada em [DATA_PROVENANCE.md](DATA_PROVENANCE.md#dados-do-simulador-pontos-simulacaojson).
+
+## Limitacoes das Coordenadas
 
 1. **Não há coordenadas oficiais públicas** para as instalações de água de Rio Verde. A Saneago e a Câmara Municipal não publicam as coordenadas GPS exatas das ETAs, reservatórios ou estações elevatórias.
 

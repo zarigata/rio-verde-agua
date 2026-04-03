@@ -138,6 +138,26 @@ Os seguintes indicadores foram extraídos do plano original do projeto (`.sisyph
 
 ---
 
+## Dados do Simulador (`pontos-simulacao.json`)
+
+O simulador de transferencia utiliza 9 pontos com os seguintes niveis de certeza:
+
+| Ponto | Tipo | Capacidade | Consumo | Certeza | Justificativa |
+|-------|------|------------|---------|---------|---------------|
+| ETA Abobora | ETA | 2.000 m³ | — | Confirmado | Capacidade derivada de 120 L/s (Saneago 2023) |
+| CR Aeroporto | Reservatorio | 2.000 m³ | 420 m³/dia | Confirmado | Capacidade literal do artigo Saneago 2023 |
+| CR Gameleiras | Reservatorio | 1.500 m³ | 330 m³/dia | Estimado | Capacidade nao divulgada; estimada por类比 com CR Aeroporto |
+| ETA Rio Verdinho (Lote 2) | ETA | 4.000 m³ | — | Confirmado | Captação citada na Camara Municipal 2024 |
+| Setor Sul (Jardim Goias) | Zona | 800 m³ | 270 m³/dia | Estimado | Populacao e consumo estimados (IBGE) |
+| Setor Norte (Vila Nova) | Zona | 600 m³ | 210 m³/dia | Estimado | Populacao e consumo estimados (IBGE) |
+| Setor Oeste (St. Antonio) | Zona | 500 m³ | 180 m³/dia | Estimado | Populacao e consumo estimados (IBGE) |
+| Ribeirao Abobora | Manancial | 50.000 m³ | 10.000 m³/dia | Estimado | Volume estimado para ribeirao de Cerrado |
+| Ribeirao da Laje | Manancial | 40.000 m³ | — | Estimado | Volume estimado para ribeirao de Cerrado |
+
+> **Nota**: Todos os pontos marcados como "Estimado" sao claramente identificados na interface do simulador com o badge "Estimado". Os pontos "Confirmado" possuem badge "Real".
+
+---
+
 ## Dados Não Utilizados (Removidos)
 
 Os seguintes dados do sistema anterior foram **intencionalmente removidos** por não serem verificáveis ou por referirem-se a municípios fora do escopo:

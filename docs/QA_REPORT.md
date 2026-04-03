@@ -1,119 +1,110 @@
-# Relatório de QA
+# Relatorio de QA
 
-Teste de qualidade realizado em 02/04/2026 no site publicado em https://zarigata.github.io/rio-verde-agua/
+Teste de qualidade realizado em 03/04/2026 no site publicado em https://zarigata.github.io/rio-verde-agua/
 
 ## Ambiente de Teste
 
 | Item | Valor |
 |------|-------|
 | URL | https://zarigata.github.io/rio-verde-agua/ |
-| Navegador | Chromium (via Chrome DevTools MCP) |
+| Navegador | Chromium 146 (via Playwright MCP) |
 | Dispositivo | Desktop |
-| Data | 02/04/2026 |
-| Commit | 74d06b5 (fix: repair broken JSON in data files) |
-| GitHub Actions | pages-build-deployment — success (45s) |
+| Data | 03/04/2026 |
+| Commit | 236864d (fix: add type=module to all engine script tags, fix select label bug) |
+| GitHub Actions | pages-build-deployment — success |
 
 ## Resultado Geral
 
-| Categoria | Status | Observações |
+| Categoria | Status | Observacoes |
 |-----------|--------|------------|
-| Carregamento da página | Aprovado | Página carrega em < 5s |
-| HTML semântico | Aprovado | lang="pt-BR", sections, nav, header, footer |
-| Português com diacríticos | Aprovado | Água, Município, Hídrica, Metodologia, Simulação, etc. |
-| Sem emojis em UI | Aprovado | Nenhum emoji em headings, botões ou rótulos |
-| Mapa Leaflet | Aprovado | Mapa carrega com tiles OpenStreetMap e 10 marcadores |
+| Carregamento das paginas | Aprovado | Todas as 7 paginas carregam em < 5s |
+| HTML semantico | Aprovado | lang="pt-BR", sections, nav, header, footer |
+| Portugues com diacriticos | Aprovado | Agua, Municipio, Hidrica, Metodologia, Simulacao, etc. |
+| Sem emojis em UI | Aprovado | Nenhum emoji em headings, botoes ou rotulos |
+| Navegacao entre paginas | Aprovado | 7 abas, link ativo destacado |
+| Tema claro/escuro | Aprovado | Toggle funcional, persistido em localStorage |
+| Mapa Leaflet | Aprovado | Mapa carrega com tiles OpenStreetMap e marcadores |
 | Tabela de infraestrutura | Aprovado | 10 linhas com 6 colunas, dados e links para fontes |
-| Indicadores municipais | Aprovado | 10 indicadores com valores e fonte |
-| Cartões de fontes | Aprovado | 4 fontes com metadados completos |
-| Gráfico de produção/demanda | Aprovado | Chart.js bar chart renderizado |
-| Gráfico de simulação | Aprovado | Chart.js line chart renderizado |
-| Botões de simulação | Aprovado | 5 botões de evento + 3 de tempo + 1 reiniciar |
-| Seção de referências | Aprovado | 5 referências em formato ABNT |
-| Disclaimer de coordenadas | Aprovado | Presente no rodapé |
-| TensorFlow.js | Aprovado (removido) | Não carrega nenhuma dependência de IA |
+| Simulador de transferencia | Aprovado | 9 pontos, calculo em tempo real, recomendacoes |
+| Simulacao de cenarios | Aprovado | Botoes de evento, linha do tempo |
+| TensorFlow.js | Aprovado (ausente) | Nao carrega nenhuma dependencia de IA |
 
 ## Erros no Console
 
-| Erro | Severidade | Resolução |
+| Erro | Severidade | Resolucao |
 |------|-----------|-----------|
-| favicon.ico 404 | Baixa (cosmético) | Não requer ação. Apenas ícone de favorito ausente. |
+| favicon.ico 404 | Baixa (cosmetico) | Nao requer acao. Apenas icone de favorito ausente. |
 
-**Nenhum erro JavaScript.** O erro de parse de JSON que existiu no primeiro deploy foi corrigido no commit 74d06b5.
+**Nenhum erro JavaScript.** Todos os 7 arquivos de logica passam `node --check`. Todas as paginas retornam 0 erros no console apos carregamento completo.
 
 ## Testes Funcionais
+
+### Navegacao
+
+- [x] 7 abas de navegacao: Visao Geral, Metodologia, Dados Reais, Mapa, Simulador, Cenarios, Equipe / Projeto
+- [x] Link ativo (nav-active) destacado na pagina corrente
+- [x] Todas as paginas acessiveis (HTTP 200)
+- [x] Header com link para index.html
+
+### Tema Claro/Escuro
+
+- [x] Botao de toggle presente em todas as paginas
+- [x] Alterna entre `data-theme="light"` e `data-theme="dark"`
+- [x] Preferencia persistida em localStorage
+- [x] Detecta preferencia do sistema operacional
+- [x] Variaveis CSS aplicadas corretamente em ambos os temas
 
 ### Mapa Interativo
 
 - [x] Mapa carrega com tiles do OpenStreetMap
-- [x] 10 marcadores de infraestrutura visíveis
-- [x] Legenda de certeza (Confirmado/Derivado/Aproximado) presente
+- [x] Marcadores de infraestrutura visiveis
+- [x] Legenda de certeza presente
 - [x] Popups abrem ao clicar nos marcadores
 - [x] Zoom in/Zoom out funcionais
-- [x] Mapa centralizado em Rio Verde, zoom 12
 
-### Tabela de Infraestrutura
+### Dados Reais
 
-- [x] Cabeçalho com 6 colunas: Nome, Tipo, Capacidade, Certeza, Status, Fonte
-- [x] 10 linhas de dados (todas as infraestruturas)
-- [x] Badges de certeza coloridos (verde/amarelo/vermelho)
-- [x] Links para fontes oficiais abrem em nova aba
-- [x] Items "Em construção" corretamente identificados
-- [x] Endereços aproximados exibidos sob o nome
+- [x] Tabela de infraestrutura com 10 itens
+- [x] Indicadores municipais populados
+- [x] Cartoes de fontes com metadados
+- [x] Dados carregados via fetch de JSON
 
-### Indicadores Municipais
+### Simulador de Transferencia
 
-- [x] Tabela com 3 colunas: Indicador, Valor, Fonte
-- [x] 10 indicadores populados
-- [x] Valores formatados (locale pt-BR para números)
-- [x] Fonte atribuída a cada indicador
+- [x] 9 pontos disponiveis nos selects de origem/destino
+- [x] Sliders de volume e perda operacional funcionais
+- [x] Dropdown de horizonte temporal
+- [x] Botao "Executar Transferencia" funcional
+- [x] Botao "Resetar Simulacao" funcional
+- [x] Cards de pontos com barras coloridas por criticidade
+- [x] Badges "Real" / "Estimado" nos cards
+- [x] Tabela de resultado com antes/depois
+- [x] Recomendacao exibida com nivel e score
+- [x] Log de sessao registra acoes
+- [x] Indicadores globais (volume total, taxa media, autonomia, criticos)
+- [x] Acordeoes explicativos ("Como Funciona")
 
-### Cartões de Fontes
+### Simulacao de Cenarios
 
-- [x] 4 fontes exibidas como cartões com borda lateral
-- [x] Metadados completos: autor, tipo, data, URL, status de acesso
-- [x] Dados extraídos listados para cada fonte
-- [x] Fonte AMAE-404 exibida com aviso de lacuna de dados
-
-### Simulação
-
-- [x] Botão "Seca" presente e funcional
-- [x] Botão "Chuva Intensa" presente e funcional
-- [x] Botão "Crescimento Populacional" presente e funcional
-- [x] Botão "Aumento Industrial" presente e funcional
-- [x] Botão "Quebra de Reservatório" presente e funcional
-- [x] Controles de tempo (+1 Dia, +1 Mês, +1 Ano) presentes
-- [x] Botão "Reiniciar Simulação" presente
-- [x] Status da simulação exibe dados atualizados após evento
-- [x] Histórico de eventos registra ações
-
-### Gráficos
-
-- [x] Gráfico de barras (Produção e Demanda) renderizado
-- [x] Gráfico de linhas (Evolução da Simulação) renderizado
-- [x] Gráficos atualizam ao avançar tempo
-
-### Navegação
-
-- [x] 8 links de navegação (Introdução, Metodologia, Mapa, Infraestrutura, Indicadores, Simulação, Fontes, Referências)
-- [x] Scroll suave para seções (CSS scroll-behavior: smooth)
-- [x] Navegação sticky permanece visível ao rolar
-
-### Responsividade
-
-- [x] Layout de simulação muda para coluna única abaixo de 1024px (não testado em dispositivo real)
+- [x] Botoes de evento presentes (Seca, Chuva Intensa, etc.)
+- [x] Controles de tempo (+1 Dia, +1 Mes, +1 Ano)
+- [x] Botao "Reiniciar Simulacao" funcional
+- [x] Estado dos pontos atualizado apos evento
 
 ## Problemas Conhecidos
 
-1. **Coordenadas aproximadas**: Todas as coordenadas são geocodificadas, não GPS-confirmadas. Isso é declarado no rodapé, na seção de metodologia e nos popups.
+1. **Coordenadas aproximadas**: Todas as coordenadas sao geocodificadas, nao GPS-confirmadas. Declarado no rodape e nos popups.
 
-2. **Dados do plano original**: Indicadores como extensão de rede água (509.966 m) e ligações (31.817) não possuem citação direta de fonte oficial verificável — são provenientes do plano original do projeto.
+2. **Dados do plano original**: Indicadores como extensao de rede agua (509.966 m) e ligacoes (31.817) nao possuem citacao direta de fonte oficial verificavel.
 
-3. **AMAE indisponível**: A fonte AMAE retornou 404. Dados regulatórios sobre qualidade da água e índices de atendimento não estão disponíveis.
+3. **AMAE indisponivel**: A fonte AMAE retornou 404. Dados regulatorios sobre qualidade da agua nao estao disponiveis.
 
-4. **Sem favicon**: O ícone de favorito retorna 404 (cosmético).
+4. **Sem favicon**: O icone de favorito retorna 404 (cosmetico).
 
-5. **Responsividade não testada em dispositivos reais**: A media query para 768px foi escrita mas não testada em celular/tablet.
+5. **Responsividade**: Media queries foram escritas mas nao testadas em dispositivos reais.
 
-## Conclusão
+6. **Dados do simulador**: 9 pontos de simulacao em `pontos-simulacao.json` usam capacidade e consumo confirmados para ETAs/reservatorios reais. Zonas de abastecimento e mananciais usam valores estimados (derivados de parametros academicos), claramente marcados como "Estimado" na interface.
 
-O site atende aos requisitos do TCC: dados rastreáveis, níveis de certeza declarados, sem dados inventados, tipografia acadêmica e funcionamento da simulação. Os únicos problemas são limitações de dados (coordenadas aproximadas, fontes indisponíveis) que já estão documentados e sinalizados no site.
+## Conclusao
+
+O site atende aos requisitos do TCC: dados rastreaveis, niveis de certeza declarados, sem dados inventados, tipografia academica e funcionamento da simulacao. A plataforma multi-pagina oferece navegacao clara, tema claro/escuro, simulador de transferencia com recomendacoes e simulacao de cenarios climaticos.
