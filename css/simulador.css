@@ -1,0 +1,758 @@
+/* ==========================================================================
+   simulador.css — Simulator & Scenarios Page Styles
+   Pages: simulador.html, cenarios.html
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Sim Hero
+   -------------------------------------------------------------------------- */
+.sim-hero {
+    text-align: center;
+    padding: var(--sp-10) var(--sp-4);
+    margin-bottom: var(--sp-4);
+    background: linear-gradient(135deg, var(--cor-fundo-alt) 0%, var(--cor-card) 100%);
+    border: 1px solid var(--cor-borda);
+    border-radius: var(--radius-md);
+    transition: var(--transition-theme);
+}
+
+[data-theme="dark"] .sim-hero {
+    background: linear-gradient(135deg, #1a2744 0%, #161b22 100%);
+}
+
+.sim-hero h2 {
+    font-family: var(--serif);
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin-bottom: var(--sp-2);
+    border-bottom: none;
+    padding-bottom: 0;
+    transition: var(--transition-theme);
+}
+
+[data-theme="dark"] .sim-hero h2 {
+    color: #e2e8f0;
+}
+
+.sim-hero-desc {
+    font-family: var(--sans);
+    color: var(--cor-texto-claro);
+    font-size: 0.95rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* --------------------------------------------------------------------------
+   2. Sim Layout — 3-Column Grid
+   -------------------------------------------------------------------------- */
+.sim-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr 300px;
+    gap: var(--sp-6);
+    align-items: start;
+}
+
+/* --------------------------------------------------------------------------
+   3. Sim Painel (Sidebars)
+   -------------------------------------------------------------------------- */
+.sim-painel {
+    position: sticky;
+    top: 5rem;
+}
+
+.sim-painel-esquerda {
+    max-height: calc(100vh - 6rem);
+    overflow-y: auto;
+}
+
+.sim-painel-direita {
+    max-height: calc(100vh - 6rem);
+    overflow-y: auto;
+}
+
+/* --------------------------------------------------------------------------
+   4. Sim Bloco (Card-like section in panels)
+   -------------------------------------------------------------------------- */
+.sim-bloco {
+    background-color: var(--cor-card);
+    border: 1px solid var(--cor-borda);
+    border-radius: var(--radius-sm);
+    padding: var(--sp-5);
+    margin-bottom: var(--sp-4);
+    transition: box-shadow var(--transition-base), var(--transition-theme);
+}
+
+.sim-bloco:hover {
+    box-shadow: 0 2px 8px var(--cor-sombra);
+}
+
+.sim-bloco h3 {
+    font-family: var(--serif);
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin: 0 0 var(--sp-3) 0;
+    padding-bottom: var(--sp-2);
+    border-bottom: 1px solid var(--cor-borda);
+    transition: var(--transition-theme);
+}
+
+[data-theme="dark"] .sim-bloco h3 {
+    color: #e2e8f0;
+}
+
+/* --------------------------------------------------------------------------
+   5. Sim Campo (Form Fields)
+   -------------------------------------------------------------------------- */
+.sim-campo {
+    margin-bottom: var(--sp-4);
+}
+
+.sim-campo label {
+    display: block;
+    font-family: var(--sans);
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--cor-texto-claro);
+    margin-bottom: var(--sp-1);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.sim-campo select,
+.sim-campo input[type="number"] {
+    width: 100%;
+    padding: var(--sp-2) var(--sp-3);
+    border: 1px solid var(--cor-borda);
+    border-radius: var(--radius-sm);
+    background-color: var(--cor-fundo);
+    color: var(--cor-texto);
+    font-family: var(--sans);
+    font-size: 0.85rem;
+    transition: border-color var(--transition-fast), var(--transition-theme);
+    appearance: none;
+}
+
+.sim-campo select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b7280' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    padding-right: 2rem;
+}
+
+.sim-campo select:focus,
+.sim-campo input:focus {
+    outline: none;
+    border-color: var(--cor-accent);
+    box-shadow: 0 0 0 2px rgba(15, 52, 96, 0.15);
+}
+
+[data-theme="dark"] .sim-campo select:focus,
+[data-theme="dark"] .sim-campo input:focus {
+    box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.2);
+}
+
+.sim-campo output {
+    display: block;
+    font-family: var(--mono);
+    font-size: 0.9rem;
+    color: #0f3460;
+    margin-top: var(--sp-1);
+    font-weight: 600;
+    transition: var(--transition-theme);
+}
+
+[data-theme="dark"] .sim-campo output {
+    color: var(--cor-accent);
+}
+
+/* --------------------------------------------------------------------------
+   6. Input Range Styling
+   -------------------------------------------------------------------------- */
+.sim-campo input[type="range"] {
+    width: 100%;
+    height: 6px;
+    border-radius: var(--radius-full);
+    background-color: var(--cor-borda);
+    appearance: none;
+    outline: none;
+    cursor: pointer;
+    margin-top: var(--sp-1);
+}
+
+.sim-campo input[type="range"]::-webkit-slider-thumb {
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: var(--radius-full);
+    background-color: #0f3460;
+    border: 2px solid #fff;
+    box-shadow: 0 1px 4px var(--cor-sombra-forte);
+    cursor: pointer;
+    transition: background-color var(--transition-fast);
+}
+
+[data-theme="dark"] .sim-campo input[type="range"]::-webkit-slider-thumb {
+    background-color: var(--cor-accent);
+    border-color: #161b22;
+}
+
+.sim-campo input[type="range"]::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: var(--radius-full);
+    background-color: #0f3460;
+    border: 2px solid #fff;
+    box-shadow: 0 1px 4px var(--cor-sombra-forte);
+    cursor: pointer;
+}
+
+[data-theme="dark"] .sim-campo input[type="range"]::-moz-range-thumb {
+    background-color: var(--cor-accent);
+    border-color: #161b22;
+}
+
+.sim-campo input[type="range"]:focus-visible::-webkit-slider-thumb {
+    box-shadow: 0 0 0 3px rgba(15, 52, 96, 0.25);
+}
+
+/* --------------------------------------------------------------------------
+   7. Sim Info Ponto
+   -------------------------------------------------------------------------- */
+.sim-info-ponto {
+    font-family: var(--sans);
+    font-size: 0.78rem;
+    color: var(--cor-texto-claro);
+    margin-top: var(--sp-1);
+    padding: var(--sp-1) var(--sp-2);
+    background-color: var(--cor-fundo-alt);
+    border-radius: var(--radius-sm);
+    line-height: 1.5;
+    transition: var(--transition-theme);
+}
+
+/* --------------------------------------------------------------------------
+   8. Sim Pontos Grid
+   -------------------------------------------------------------------------- */
+.sim-pontos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: var(--sp-3);
+}
+
+/* --------------------------------------------------------------------------
+   9. Sim Resultado
+   -------------------------------------------------------------------------- */
+.sim-resultado {
+    min-height: 60px;
+    transition: var(--transition-theme);
+}
+
+/* --------------------------------------------------------------------------
+   10. Sim Placeholder
+   -------------------------------------------------------------------------- */
+.sim-placeholder {
+    color: var(--cor-texto-claro);
+    font-style: italic;
+    font-size: 0.9rem;
+    padding: var(--sp-3);
+    text-align: center;
+}
+
+/* --------------------------------------------------------------------------
+   11. Sim Recomendacao
+   -------------------------------------------------------------------------- */
+.sim-recomendacao {
+    padding: var(--sp-4);
+    border-radius: var(--radius-sm);
+    border-left: 3px solid var(--cor-borda);
+    background-color: var(--cor-fundo-alt);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    transition: var(--transition-theme);
+}
+
+.sim-recomendacao.recomendacao-ok {
+    border-left-color: var(--cor-confirmado);
+    background-color: var(--cor-confirmado-bg);
+}
+
+.sim-recomendacao.recomendacao-risco {
+    border-left-color: var(--cor-derivado);
+    background-color: var(--cor-derivado-bg);
+}
+
+.sim-recomendacao.recomendacao-perigo {
+    border-left-color: var(--cor-aproximado);
+    background-color: var(--cor-aproximado-bg);
+}
+
+/* --------------------------------------------------------------------------
+   12. Sim Indicadores
+   -------------------------------------------------------------------------- */
+.sim-indicadores {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--sp-2);
+}
+
+/* --------------------------------------------------------------------------
+   13. Sim Log
+   -------------------------------------------------------------------------- */
+.sim-log {
+    max-height: 180px;
+    overflow-y: auto;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    line-height: 1.6;
+    padding: var(--sp-3);
+    background-color: var(--cor-fundo-alt);
+    border: 1px solid var(--cor-borda);
+    border-radius: var(--radius-sm);
+    transition: var(--transition-theme);
+}
+
+/* --------------------------------------------------------------------------
+   14. Sim Explicacao (Details/Summary)
+   -------------------------------------------------------------------------- */
+.sim-explicacao details {
+    margin-bottom: var(--sp-2);
+}
+
+.sim-explicacao summary {
+    font-family: var(--sans);
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #0f3460;
+    cursor: pointer;
+    padding: var(--sp-2) 0;
+    border-bottom: 1px solid var(--cor-borda);
+    transition: color var(--transition-fast);
+    list-style: none;
+}
+
+[data-theme="dark"] .sim-explicacao summary {
+    color: var(--cor-accent);
+}
+
+.sim-explicacao summary::-webkit-details-marker {
+    display: none;
+}
+
+.sim-explicacao summary::before {
+    content: '\25B6  ';
+    font-size: 0.7rem;
+    display: inline-block;
+    transition: transform var(--transition-fast);
+}
+
+.sim-explicacao details[open] summary::before {
+    transform: rotate(90deg);
+}
+
+.sim-explicacao details p {
+    font-size: 0.82rem;
+    color: var(--cor-texto-claro);
+    padding: var(--sp-2) 0;
+    line-height: 1.6;
+}
+
+/* --------------------------------------------------------------------------
+   15. Sim Graficos Row
+   -------------------------------------------------------------------------- */
+.sim-graficos-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--sp-4);
+}
+
+/* --------------------------------------------------------------------------
+   16. Simulator Buttons
+   -------------------------------------------------------------------------- */
+.sim-btn-executar {
+    width: 100%;
+    margin-top: var(--sp-4);
+    padding: var(--sp-3) var(--sp-4);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.sim-btn-resetar {
+    width: 100%;
+    margin-top: var(--sp-2);
+}
+
+/* --------------------------------------------------------------------------
+   17. Cenarios Layout (2-column: panel + charts)
+   -------------------------------------------------------------------------- */
+.cenarios-layout {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: var(--sp-6);
+    align-items: start;
+}
+
+.sim-painel-central {
+    min-width: 0;
+}
+
+/* --------------------------------------------------------------------------
+   18. Sim Central (simulator middle column)
+   -------------------------------------------------------------------------- */
+.sim-central {
+    min-width: 0;
+}
+
+/* --------------------------------------------------------------------------
+   19. Responsive: max-width 1200px
+   -------------------------------------------------------------------------- */
+@media (max-width: 1200px) {
+    .sim-layout {
+        grid-template-columns: 260px 1fr;
+    }
+
+    .sim-painel-direita {
+        grid-column: 1 / -1;
+        position: static;
+        max-height: none;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: var(--sp-4);
+    }
+
+    .sim-painel-direita .sim-bloco {
+        margin-bottom: 0;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   20. Responsive: max-width 1024px
+   -------------------------------------------------------------------------- */
+@media (max-width: 1024px) {
+    .sim-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .sim-painel-esquerda,
+    .sim-painel-direita {
+        position: static;
+        max-height: none;
+    }
+
+    .sim-painel-direita {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .cenarios-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .sim-graficos-row {
+        grid-template-columns: 1fr;
+    }
+
+    .sim-hero h2 {
+        font-size: 1.5rem;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   21. Responsive: max-width 768px
+   -------------------------------------------------------------------------- */
+@media (max-width: 768px) {
+    .sim-hero {
+        padding: var(--sp-6) var(--sp-3);
+    }
+
+    .sim-hero h2 {
+        font-size: 1.25rem;
+    }
+
+    .sim-hero-desc {
+        font-size: 0.85rem;
+    }
+
+    .sim-bloco {
+        padding: var(--sp-4);
+    }
+
+    .sim-graficos-row {
+        grid-template-columns: 1fr;
+    }
+
+    .sim-pontos-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .sim-indicadores {
+        grid-template-columns: 1fr;
+    }
+
+    .botoes-tempo {
+        grid-template-columns: 1fr;
+    }
+
+    .cenarios-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+.sim-ponto-card {
+background: var(--card-bg);
+border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+padding: 0.75rem;
+transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.sim-ponto-card:hover {
+    transform: translateY(-2px);
+box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="dark"] .sim-ponto-card:hover {
+box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.sim-ponto-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.sim-ponto-header h4 {
+    font-family: var(--sans);
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.sim-ponto-barra {
+    height: 8px;
+    background: var(--bg-secondary);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+}
+
+.sim-ponto-barra-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.4s ease;
+}
+
+.sim-ponto-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    font-family: var(--sans);
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+.sim-ponto-stats span {
+    color: var(--text-muted);
+}
+
+.sim-ponto-stats strong {
+    color: var(--text-primary);
+}
+
+.sim-result-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--sans);
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+}
+
+.sim-result-table th,
+.sim-result-table td {
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid var(--border-color);
+    text-align: left;
+}
+
+.sim-result-table th {
+    background: var(--bg-secondary);
+    font-weight: 600;
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+}
+
+.sim-result-summary {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    font-family: var(--sans);
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    padding: 0.75rem;
+    background: var(--bg-secondary);
+    border-radius: var(--radius-sm);
+}
+
+.sim-result-summary div {
+    flex: 1;
+    min-width: 120px;
+}
+
+.sim-result-summary strong {
+    color: var(--text-primary);
+}
+
+.sim-info-ponto {
+    padding: 0.5rem;
+    margin-top: 0.4rem;
+    background: var(--bg-secondary);
+    border-radius: var(--radius-sm);
+    font-family: var(--sans);
+    font-size: 0.78rem;
+    line-height: 1.6;
+}
+
+.sim-info-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+.sim-info-row span {
+    color: var(--text-muted);
+}
+
+.sim-info-badge {
+    display: inline-block;
+    padding: 0.15rem 0.5rem;
+    border-radius: 3px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    margin-top: 0.4rem;
+}
+
+.sim-badge-real {
+    background: rgba(22, 163, 74, 0.12);
+    color: #16a34a;
+}
+
+.sim-badge-estimado {
+    background: rgba(245, 158, 11, 0.12);
+    color: #f59e0b;
+}
+
+[data-theme="dark"] .sim-badge-real {
+    background: rgba(22, 163, 74, 0.2);
+    color: #4ade80;
+}
+
+[data-theme="dark"] .sim-badge-estimado {
+    background: rgba(245, 158, 11, 0.2);
+    color: #fbbf24;
+}
+
+.sim-badge-tag {
+    display: inline-block;
+    padding: 0.1rem 0.35rem;
+    border-radius: 3px;
+    font-size: 0.68rem;
+    font-weight: 600;
+}
+
+.sim-tag-real {
+    background: rgba(22, 163, 74, 0.15);
+    color: #16a34a;
+}
+
+.sim-tag-estimado {
+    background: rgba(245, 158, 11, 0.15);
+    color: #f59e0b;
+}
+
+.sim-rec-box {
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-sm);
+    margin-bottom: 0.5rem;
+}
+
+.sim-rec-nivel {
+    font-family: var(--sans);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.25rem;
+}
+
+.sim-rec-texto {
+    font-family: var(--sans);
+    font-size: 0.85rem;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+}
+
+.sim-rec-score {
+    font-family: var(--sans);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.sim-rec-detalhes {
+    margin: 0.4rem 0 0 0;
+    padding-left: 1.25rem;
+    font-family: var(--sans);
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+}
+
+.sim-rec-detalhes li {
+    margin-bottom: 0.2rem;
+}
+
+.sim-ind-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.4rem 0;
+    border-bottom: 1px solid var(--border-color);
+    font-family: var(--sans);
+    font-size: 0.8rem;
+}
+
+.sim-ind-item span {
+    color: var(--text-muted);
+}
+
+.sim-ind-item strong {
+    color: var(--text-primary);
+}
+
+.sim-log-entry {
+    padding: 0.35rem 0;
+    border-bottom: 1px solid var(--border-color);
+    font-family: var(--mono, monospace);
+    font-size: 0.75rem;
+    line-height: 1.5;
+    color: var(--text-secondary);
+}
+
+.sim-log-hora {
+    color: var(--text-muted);
+}
+
+@media print {
+    .sim-painel-esquerda,
+    .sim-painel-direita {
+        position: static;
+        max-height: none;
+    }
+
+    .sim-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .cenarios-layout {
+        grid-template-columns: 1fr;
+    }
+}

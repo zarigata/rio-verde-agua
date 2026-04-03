@@ -1,0 +1,481 @@
+/* ==========================================================================
+   visao-geral.css — Institutional Page Styles
+   Pages: index.html, metodologia.html, equipe.html
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Hero Section (index.html)
+   -------------------------------------------------------------------------- */
+.hero {
+    width: 100%;
+    margin-left: calc(-1 * var(--sp-6));
+    margin-right: calc(-1 * var(--sp-6));
+    padding: var(--sp-16) var(--sp-6);
+    background: linear-gradient(135deg, #1a1a2e 0%, #0f3460 100%);
+    color: #fff;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+[data-theme="dark"] .hero {
+    background: linear-gradient(135deg, #0d1117 0%, #1a2744 100%);
+}
+
+.hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 30% 50%, rgba(15, 52, 96, 0.3) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.hero-inner {
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+}
+
+.hero-titulo {
+    font-family: var(--serif);
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: var(--sp-4);
+    letter-spacing: -0.01em;
+}
+
+.hero-subtitulo {
+    font-family: var(--sans);
+    font-size: 1.1rem;
+    line-height: 1.7;
+    opacity: 0.9;
+    max-width: 700px;
+    margin: 0 auto var(--sp-4);
+}
+
+.hero-ctas {
+    display: flex;
+    gap: var(--sp-4);
+    justify-content: center;
+    margin-top: var(--sp-8);
+    flex-wrap: wrap;
+}
+
+.hero-ctas .btn {
+    padding: var(--sp-3) var(--sp-8);
+    font-size: 0.95rem;
+}
+
+.hero-ctas .btn-primary {
+    background-color: #fff;
+    color: #1a1a2e;
+    border-color: #fff;
+}
+
+.hero-ctas .btn-primary:hover {
+    background-color: #f1f5f9;
+    border-color: #f1f5f9;
+}
+
+[data-theme="dark"] .hero-ctas .btn-primary {
+    background-color: #e2e8f0;
+    color: #0d1117;
+    border-color: #e2e8f0;
+}
+
+[data-theme="dark"] .hero-ctas .btn-primary:hover {
+    background-color: #cbd5e1;
+}
+
+.hero-ctas .btn-outline {
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.5);
+    background-color: transparent;
+}
+
+.hero-ctas .btn-outline:hover {
+    background-color: #fff;
+    color: #1a1a2e;
+    border-color: #fff;
+}
+
+[data-theme="dark"] .hero-ctas .btn-outline:hover {
+    background-color: #e2e8f0;
+    color: #0d1117;
+}
+
+/* --------------------------------------------------------------------------
+   2. Two-Column Grid (.secao-grid-2)
+   -------------------------------------------------------------------------- */
+.secao-grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--sp-8);
+}
+
+.problema-card {
+    background-color: var(--cor-card);
+    border: 1px solid var(--cor-borda);
+    border-left: 3px solid #0f3460;
+    padding: var(--sp-6);
+    border-radius: var(--radius-sm);
+    transition: var(--transition-theme);
+}
+
+[data-theme="dark"] .problema-card {
+    border-left-color: var(--cor-accent);
+}
+
+.problema-card h3 {
+    margin-top: 0;
+}
+
+/* --------------------------------------------------------------------------
+   3. Steps Grid (index.html — "Como o Sistema Funciona")
+   -------------------------------------------------------------------------- */
+.steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--sp-6);
+}
+
+.step {
+    background-color: var(--cor-card);
+    border: 1px solid var(--cor-borda);
+    border-radius: var(--radius-sm);
+    padding: var(--sp-6);
+    transition: box-shadow var(--transition-fast), var(--transition-theme);
+}
+
+.step:hover {
+    box-shadow: 0 4px 12px var(--cor-sombra);
+}
+
+.step-numero {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-full);
+    background-color: #0f3460;
+    color: #fff;
+    font-family: var(--sans);
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-bottom: var(--sp-3);
+}
+
+[data-theme="dark"] .step-numero {
+    background-color: var(--cor-accent);
+    color: #0d1117;
+}
+
+.step h3 {
+    margin-top: 0;
+    font-size: 1.05rem;
+}
+
+.step p {
+    font-size: 0.9rem;
+    color: var(--cor-texto-claro);
+    margin-bottom: 0;
+}
+
+/* --------------------------------------------------------------------------
+   4. Dados Grid & Cards
+   -------------------------------------------------------------------------- */
+.dados-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--sp-6);
+}
+
+.dado-card {
+    background-color: var(--cor-card);
+    border: 1px solid var(--cor-borda);
+    border-left: 3px solid #0f3460;
+    padding: var(--sp-6);
+    border-radius: var(--radius-sm);
+    transition: var(--transition-theme);
+}
+
+[data-theme="dark"] .dado-card {
+    border-left-color: var(--cor-accent);
+}
+
+.dado-card h3 {
+    margin-top: 0;
+    font-size: 1.05rem;
+}
+
+.dado-card h3 a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.dado-card h3 a:hover {
+    color: var(--cor-accent);
+    text-decoration: underline;
+}
+
+.dado-card ul {
+    margin: var(--sp-2) 0 0 var(--sp-5);
+}
+
+.dado-card li {
+    font-size: 0.9rem;
+    margin-bottom: var(--sp-1);
+}
+
+/* --- Certainty modifiers --- */
+.dado-confirmado {
+    border-left-color: var(--cor-confirmado);
+    background-color: var(--cor-confirmado-bg);
+}
+
+.dado-derivado {
+    border-left-color: var(--cor-derivado);
+    background-color: var(--cor-derivado-bg);
+}
+
+.dado-aproximado {
+    border-left-color: var(--cor-aproximado);
+    background-color: var(--cor-aproximado-bg);
+}
+
+/* --------------------------------------------------------------------------
+   5. Aviso de Dados
+   -------------------------------------------------------------------------- */
+.aviso-dados {
+    margin-top: var(--sp-8);
+    padding: var(--sp-4) var(--sp-6);
+    background-color: var(--cor-derivado-bg);
+    border: 1px solid var(--cor-derivado-borda);
+    border-left: 3px solid var(--cor-derivado);
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    transition: var(--transition-theme);
+}
+
+[data-theme="dark"] .aviso-dados {
+    border-left-color: var(--cor-derivado);
+}
+
+/* --------------------------------------------------------------------------
+   6. Funciona Grid (index.html — "Por Que Funciona")
+   -------------------------------------------------------------------------- */
+.funciona-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--sp-6);
+}
+
+.funciona-item {
+    background-color: var(--cor-card);
+    border: 1px solid var(--cor-borda);
+    border-radius: var(--radius-sm);
+    padding: var(--sp-6);
+    box-shadow: 0 1px 3px var(--cor-sombra);
+    transition: box-shadow var(--transition-fast), var(--transition-theme);
+}
+
+.funciona-item:hover {
+    box-shadow: 0 4px 12px var(--cor-sombra-forte);
+}
+
+.funciona-item h3 {
+    margin-top: 0;
+    font-size: 1.05rem;
+}
+
+.funciona-item p {
+    font-size: 0.9rem;
+    color: var(--cor-texto-claro);
+    margin-bottom: 0;
+}
+
+/* --------------------------------------------------------------------------
+   7. Resultados Grid (index.html — "Resultados Esperados")
+   -------------------------------------------------------------------------- */
+.resultados-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--sp-6);
+}
+
+.resultado-item {
+    background-color: var(--cor-card);
+    border: 1px solid var(--cor-borda);
+    border-radius: var(--radius-sm);
+    padding: var(--sp-6);
+    text-align: center;
+    transition: var(--transition-theme);
+}
+
+.resultado-item h3 {
+    margin-top: 0;
+    font-size: 1.05rem;
+}
+
+.resultado-item p {
+    font-size: 0.9rem;
+    color: var(--cor-texto-claro);
+    margin-bottom: 0;
+}
+
+/* --------------------------------------------------------------------------
+   8. Formulas Grid (metodologia.html)
+   -------------------------------------------------------------------------- */
+.formulas-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--sp-6);
+}
+
+.formula-card {
+    background-color: var(--cor-card);
+    border: 1px solid var(--cor-borda);
+    border-radius: var(--radius-sm);
+    padding: var(--sp-6);
+    transition: var(--transition-theme);
+}
+
+.formula-card h3 {
+    margin-top: 0;
+    font-size: 1.05rem;
+}
+
+.formula {
+    font-family: var(--mono);
+    font-size: 1.15rem;
+    background-color: var(--cor-fundo-alt);
+    padding: var(--sp-3) var(--sp-4);
+    border-radius: var(--radius-sm);
+    margin: var(--sp-3) 0;
+    text-align: center;
+    letter-spacing: 0.02em;
+    border: 1px solid var(--cor-borda);
+    transition: var(--transition-theme);
+}
+
+.formula-fonte {
+    font-size: 0.82rem;
+    font-style: italic;
+    color: var(--cor-texto-claro);
+    margin-top: var(--sp-2);
+}
+
+/* --------------------------------------------------------------------------
+   9. Limitacoes Box (metodologia.html)
+   -------------------------------------------------------------------------- */
+.limitacoes {
+    border: 1px solid var(--cor-borda);
+    border-left: 3px solid var(--cor-derivado);
+    background-color: var(--cor-derivado-bg);
+    padding: var(--sp-6);
+    border-radius: var(--radius-sm);
+    transition: var(--transition-theme);
+}
+
+[data-theme="dark"] .limitacoes {
+    border-left-color: var(--cor-derivado);
+}
+
+.limitacoes ul {
+    margin: var(--sp-2) 0 0 var(--sp-5);
+}
+
+.limitacoes li {
+    margin-bottom: var(--sp-2);
+    font-size: 0.92rem;
+}
+
+/* --------------------------------------------------------------------------
+   10. Responsive: max-width 1024px
+   -------------------------------------------------------------------------- */
+@media (max-width: 1024px) {
+    .resultados-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .secao-grid-2 {
+        grid-template-columns: 1fr;
+    }
+
+    .steps {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .dados-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .formulas-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .funciona-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .hero-titulo {
+        font-size: 2rem;
+    }
+
+    .hero {
+        padding: var(--sp-12) var(--sp-6);
+    }
+}
+
+/* --------------------------------------------------------------------------
+   11. Responsive: max-width 768px
+   -------------------------------------------------------------------------- */
+@media (max-width: 768px) {
+    .hero {
+        margin-left: calc(-1 * var(--sp-4));
+        margin-right: calc(-1 * var(--sp-4));
+        padding: var(--sp-10) var(--sp-4);
+    }
+
+    .hero-titulo {
+        font-size: 1.6rem;
+    }
+
+    .hero-subtitulo {
+        font-size: 0.95rem;
+    }
+
+    .hero-ctas {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .hero-ctas .btn {
+        width: 100%;
+        max-width: 280px;
+    }
+
+    .steps {
+        grid-template-columns: 1fr;
+    }
+
+    .dados-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .formulas-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .funciona-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .resultados-grid {
+        grid-template-columns: 1fr;
+    }
+}

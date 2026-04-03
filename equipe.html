@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equipe / Projeto — Abastecimento de Agua Rio Verde/GO</title>
+    <meta name="description" content="Informacoes sobre o projeto de TCC e referencias bibliograficas">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/visao-geral.css">
+</head>
+<body>
+    <header class="cabecalho">
+        <div class="cabecalho-conteudo">
+            <a href="index.html" class="cabecalho-logo">Rio Verde — Abastecimento Hidrico</a>
+            <button id="theme-toggle" class="btn-icon" aria-label="Alternar tema"></button>
+        </div>
+    </header>
+    <nav class="navegacao" id="navegacao">
+        <ul class="nav-lista">
+            <li><a href="index.html">Visao Geral</a></li>
+            <li><a href="metodologia.html">Metodologia</a></li>
+            <li><a href="dados.html">Dados Reais</a></li>
+            <li><a href="mapa.html">Mapa</a></li>
+            <li><a href="simulador.html">Simulador</a></li>
+            <li><a href="cenarios.html">Cenarios</a></li>
+            <li><a href="equipe.html" class="nav-active">Equipe / Projeto</a></li>
+        </ul>
+    </nav>
+    <main class="conteudo">
+        <section class="secao">
+            <h2>Sobre o Projeto</h2>
+            <div class="secao-grid-2">
+                <div>
+                    <h3>Trabalho de Conclusao de Curso</h3>
+                    <p>Este projeto constitui o componente pratico do Trabalho de Conclusao de Curso (TCC) na area de Gestao de Recursos Hidricos.</p>
+                    <p>A plataforma foi desenvolvida como uma aplicacao web estatica, sem dependencias de servidor, utilizando exclusivamente tecnologias client-side: JavaScript (ES6+), Leaflet para mapas interativos e Chart.js para visualizacoes graficas.</p>
+                    <p>Todos os dados utilizados sao provenientes de fontes publicas oficiais e possuem proveniencia registrada no codigo e na documentacao.</p>
+                </div>
+                <div>
+                    <h3>Tecnologias</h3>
+                    <ul>
+                        <li><strong>JavaScript ES6+</strong> (vanilla, sem frameworks)</li>
+                        <li><strong>Leaflet 1.9.4</strong> — mapas interativos</li>
+                        <li><strong>Chart.js</strong> — visualizacoes graficas</li>
+                        <li><strong>GitHub Pages</strong> — hospedagem estatica</li>
+                        <li><strong>CSS Custom Properties</strong> — design system com dark mode</li>
+                    </ul>
+                    <h3>Arquitetura</h3>
+                    <ul>
+                        <li>Multi-pagina estatica (7 paginas HTML)</li>
+                        <li>Modulos ES para logica separada por responsabilidade</li>
+                        <li>Dados em JSON (sem backend)</li>
+                        <li>Zero dependencias de build</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="secao">
+            <h2>Documentacao Tecnica</h2>
+            <div class="dados-grid">
+                <div class="dado-card">
+                    <h3><a href="docs/DATA_PROVENANCE.md">Proveniencia dos Dados</a></h3>
+                    <p>Proveniencia completa de todos os dados utilizados, niveis de certeza, auditoria de coordenadas e conversoes realizadas.</p>
+                </div>
+                <div class="dado-card">
+                    <h3><a href="docs/MARKER_AUDIT.md">Auditoria de Marcadores</a></h3>
+                    <p>Auditoria de todos os marcadores atuais e removidos do mapa, com justificativas para cada decisao.</p>
+                </div>
+                <div class="dado-card">
+                    <h3><a href="docs/QA_REPORT.md">Relatorio de QA</a></h3>
+                    <p>Resultados dos testes funcionais, verificacao de contrato de IDs e estado do site em producao.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="secao">
+            <h2>Referencias Bibliograficas</h2>
+            <ol class="lista-referencias">
+                <li>SANEAGO. <em>Prefeito e diretoria da Saneago realizam visita tecnica em unidades de Rio Verde</em>. Sao Paulo: Saneago, 2023. Disponivel em: https://www.saneago.com.br/#/noticia_interna/9868/3. Acesso em: 02 abr. 2026.</li>
+                <li>CAMARA MUNICIPAL DE RIO VERDE. <em>Prefeitura, Saneago e Governo de Goias lancam as obras do novo sistema de abastecimento de agua Rio Verdinho</em>. Rio Verde: Camara Municipal, 2024. Disponivel em: https://rioverde.go.leg.br/prefeitura-saneago-e-governo-de-goias-lancam-as-obras-do-novo-sistema-de-abastecimento-de-agua-rio-verdinho/. Acesso em: 02 abr. 2026.</li>
+                <li>IBGE. <em>Estimativas da populacao</em>. Rio de Janeiro: IBGE, 2025. Disponivel em: https://www.ibge.gov.br/. Acesso em: 02 abr. 2026.</li>
+                <li>ASSOCIACAO BRASILEIRA DE NORMAS TECNICAS. <em>NBR 12211: Estudos de concepcao de sistemas de abastecimento de agua</em>. Rio de Janeiro: ABNT, 1992.</li>
+                <li>ASSOCIACAO BRASILEIRA DE NORMAS TECNICAS. <em>NBR 12218: Projeto de rede de distribuicao de agua para abastecimento publico</em>. Rio de Janeiro: ABNT, 1994.</li>
+            </ol>
+        </section>
+
+        <section class="secao">
+            <h2>Licenca</h2>
+            <p>Este projeto esta sob a licenca MIT. Veja o arquivo <a href="LICENSE">LICENSE</a> para mais detalhes.</p>
+        </section>
+    </main>
+
+    <footer class="rodape">
+        <div class="rodape-conteudo">
+            <p><strong>Abastecimento de Agua no Municipio de Rio Verde/GO</strong> — Trabalho de Conclusao de Curso</p>
+            <p>Dados obtidos a partir de fontes publicas (Saneago, 2023; Camara Municipal, 2024; IBGE, 2025).</p>
+            <p class="rodape-nota">Coordenadas obtidas por geocodificacao aproximada e nao foram confirmadas por levantamento GPS. Uso exclusivo para analise academica.</p>
+        </div>
+    </footer>
+
+    <script src="js/theme.js"></script>
+</body>
+</html>

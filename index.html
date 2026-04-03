@@ -1,266 +1,237 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Abastecimento de Água no Município de Rio Verde/GO</title>
-    <meta name="description" content="Análise da infraestrutura hídrica do município de Rio Verde, Goiás — Trabalho de Conclusão de Curso">
-
+    <title>Visao Geral — Abastecimento de Agua Rio Verde/GO</title>
+    <meta name="description" content="Analise da infraestrutura hidrica do municipio de Rio Verde, Goias — TCC">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/visao-geral.css">
 </head>
 <body>
-
     <header class="cabecalho">
         <div class="cabecalho-conteudo">
-            <h1>Abastecimento de Água no Município de Rio Verde/GO</h1>
-            <p class="subtitulo">Análise da Infraestrutura Hídrica &mdash; Trabalho de Conclusão de Curso</p>
+            <a href="index.html" class="cabecalho-logo">Rio Verde — Abastecimento Hidrico</a>
+            <button id="theme-toggle" class="btn-icon" aria-label="Alternar tema"></button>
         </div>
     </header>
-
     <nav class="navegacao" id="navegacao">
         <ul class="nav-lista">
-            <li><a href="#introducao">Introdução</a></li>
-            <li><a href="#metodologia">Metodologia</a></li>
-            <li><a href="#mapa-section">Mapa</a></li>
-            <li><a href="#infraestrutura">Infraestrutura</a></li>
-            <li><a href="#indicadores">Indicadores</a></li>
-            <li><a href="#simulacao">Simulação</a></li>
-            <li><a href="#fontes">Fontes</a></li>
-            <li><a href="#referencias">Referências</a></li>
+            <li><a href="index.html" class="nav-active">Visao Geral</a></li>
+            <li><a href="metodologia.html">Metodologia</a></li>
+            <li><a href="dados.html">Dados Reais</a></li>
+            <li><a href="mapa.html">Mapa</a></li>
+            <li><a href="simulador.html">Simulador</a></li>
+            <li><a href="cenarios.html">Cenarios</a></li>
+            <li><a href="equipe.html">Equipe / Projeto</a></li>
         </ul>
     </nav>
-
     <main class="conteudo">
-
-        <section id="introducao" class="secao">
-            <h2>Introdução</h2>
-            <p>
-                O município de Rio Verde, localizado no sudoeste do estado de Goiás, destaca-se
-                como um dos polos econômicos mais expressivos da região Centro-Oeste brasileira.
-                Com população estimada em 241.494 habitantes (IBGE, 2025), o município enfrenta
-                desafios crescentes relacionados ao abastecimento de água, impulsionados pelo
-                crescimento urbano, pela atividade agroindustrial e pelas variações climáticas
-                características do bioma Cerrado.
-            </p>
-            <p>
-                A concessionária responsável pelos serviços de saneamento básico é a Saneago,
-                que opera a infraestrutura existente de captação, tratamento e distribuição de
-                água. Dentre os ativos operacionais, destacam-se a Estação de Tratamento de Água
-                (ETA) Abóbora, com capacidade de 120 L/s, e a Estação de Tratamento de Esgoto
-                (ETE) Chapadinha, com tecnologia MBBR e capacidade de 58 L/s. Além disso, o
-                município beneficiar-se-á do novo sistema Rio Verdinho, atualmente em construção,
-                que ampliará significativamente a capacidade de tratamento para 800 L/s.
-            </p>
-            <p>
-                O presente Trabalho de Conclusão de Curso propõe uma análise integrada da
-                infraestrutura hídrica municipal, combinando dados oficiais da Saneago (2023) e
-                da Câmara Municipal de Rio Verde (2024) com ferramentas de simulação computacional.
-                A simulação de cenários permite avaliar o impacto de eventos críticos &mdash; como
-                períodos de seca, crescimento populacional e rupturas operacionais &mdash; sobre
-                a capacidade de atendimento à demanda, contribuindo para o planejamento de políticas
-                públicas de gestão de recursos hídricos.
-            </p>
-        </section>
-
-        <section id="metodologia" class="secao">
-            <h2>Metodologia</h2>
-            <p>
-                Os dados utilizados neste trabalho foram obtidos a partir de duas fontes primárias:
-                relatório institucional da Saneago, publicado em agosto de 2023, e matéria
-                jornalística da Câmara Municipal de Rio Verde, publicada em outubro de 2024, que
-                descreve o lançamento das obras do novo sistema de abastecimento Rio Verdinho.
-            </p>
-            <h3>Coordenadas Geográficas</h3>
-            <p>
-                As coordenadas geográficas apresentadas neste trabalho foram obtidas por meio de
-                <strong>geocodificação aproximada</strong> a partir de nomes de bairros, endereços
-                de referência e cursos d'água. <strong>As coordenadas não foram confirmadas por
-                levantamento GPS em campo</strong>. Cada ponto de infraestrutura possui um nível
-                de certeza classificado em três categorias:
-            </p>
-            <ul>
-                <li><strong>Confirmado</strong> &mdash; coordenada verificada por mais de uma fonte ou por dado oficial.</li>
-                <li><strong>Derivado</strong> &mdash; coordenada estimada a partir de referência indireta (bairro, endereço aproximado).</li>
-                <li><strong>Aproximado</strong> &mdash; coordenada estimada com baixa precisão, sujeita a desvio significativo.</li>
-            </ul>
-            <h3>Simulação de Cenários</h3>
-            <p>
-                A simulação utiliza fórmulas hidrológicas baseadas nas normas da ABNT (NBR 12211
-                e NBR 12218) para o cálculo de demanda, produção efetiva e balanço hídrico.
-                Os cenários simulados incluem eventos de seca, chuva intensa, crescimento
-                populacional, aumento industrial e quebra de reservatório, permitindo a análise
-                de vulnerabilidades no sistema de abastecimento.
-            </p>
-        </section>
-
-        <section id="mapa-section" class="secao">
-            <h2>Mapa Interativo</h2>
-            <p class="secao-descricao">
-                Distribuição geográfica dos ativos de infraestrutura hídrica. Os marcadores
-                indicam o tipo de instalação e o nível de certeza das coordenadas.
-            </p>
-            <div id="mapa" class="mapa-container"></div>
-            <div class="legenda-mapa" id="legenda-mapa">
-                <span class="legenda-titulo">Legenda:</span>
-                <span class="legenda-item">
-                    <span class="legenda-cor legenda-captacao"></span> Captação
-                </span>
-                <span class="legenda-item">
-                    <span class="legenda-cor legenda-tratamento"></span> Tratamento
-                </span>
-                <span class="legenda-item">
-                    <span class="legenda-cor legenda-reservacao"></span> Reservação
-                </span>
-                <span class="legenda-item">
-                    <span class="legenda-cor legenda-distribuicao"></span> Distribuição
-                </span>
-                <span class="legenda-item">
-                    <span class="legenda-cor legenda-esgoto"></span> Tratamento de Esgoto
-                </span>
-                <span class="legenda-separador">|</span>
-                <span class="legenda-item">
-                    <span class="legenda-cor legenda-confirmado"></span> Confirmado
-                </span>
-                <span class="legenda-item">
-                    <span class="legenda-cor legenda-derivado"></span> Derivado
-                </span>
-                <span class="legenda-item">
-                    <span class="legenda-cor legenda-aproximado"></span> Aproximado
-                </span>
-            </div>
-        </section>
-
-        <section id="infraestrutura" class="secao">
-            <h2>Infraestrutura Hídrica</h2>
-            <p class="secao-descricao">
-                Relação dos ativos de infraestrutura identificados no município de Rio Verde,
-                com capacidade operacional, operadora responsável e status atual.
-            </p>
-            <div id="tabela-infraestrutura"></div>
-        </section>
-
-        <section id="indicadores" class="secao">
-            <h2>Indicadores Municipais</h2>
-            <p class="secao-descricao">
-                Indicadores de saneamento básico do município de Rio Verde, conforme dados
-                da Saneago (2023) e do IBGE.
-            </p>
-            <div id="indicadores-container"></div>
-        </section>
-
-        <section id="simulacao" class="secao">
-            <h2>Simulação de Cenários</h2>
-            <p class="secao-descricao">
-                Ferramenta de simulação para análise do impacto de eventos críticos sobre o
-                sistema de abastecimento. Os cálculos seguem fórmulas hidrológicas das normas
-                ABNT NBR 12211 e NBR 12218.
-            </p>
-
-            <div class="simulacao-layout">
-                <div class="simulacao-controles">
-                    <h3>Eventos</h3>
-                    <div class="botoes-eventos">
-                        <button id="btn-seca" class="btn btn-outline" type="button">Seca</button>
-                        <button id="btn-chuva" class="btn btn-outline" type="button">Chuva Intensa</button>
-                        <button id="btn-crescimento" class="btn btn-outline" type="button">Crescimento Populacional</button>
-                        <button id="btn-industrial" class="btn btn-outline" type="button">Aumento Industrial</button>
-                        <button id="btn-quebra" class="btn btn-outline" type="button">Quebra de Reservatório</button>
-                    </div>
-
-                    <h3>Controle de Tempo</h3>
-                    <div class="botoes-tempo">
-                        <button id="btn-avancar-dia" class="btn btn-outline" type="button">+1 Dia</button>
-                        <button id="btn-avancar-mes" class="btn btn-outline" type="button">+1 Mês</button>
-                        <button id="btn-avancar-ano" class="btn btn-outline" type="button">+1 Ano</button>
-                    </div>
-
-                    <div class="simulacao-status">
-                        <div id="simulacao-status" class="status-texto">Simulação inicializada</div>
-                        <button id="btn-reiniciar" class="btn btn-outline btn-reiniciar" type="button">Reiniciar Simulação</button>
-                    </div>
-
-                    <h3>Histórico de Eventos</h3>
-                    <div id="lista-eventos" class="lista-eventos">
-                        <p class="evento-vazio">Nenhum evento registrado</p>
-                    </div>
-                </div>
-
-                <div class="simulacao-graficos">
-                    <div class="grafico-wrapper">
-                        <h3>Produção e Demanda</h3>
-                        <canvas id="grafico-producao-demanda"></canvas>
-                    </div>
-                    <div class="grafico-wrapper">
-                        <h3>Evolução da Simulação</h3>
-                        <canvas id="grafico-simulacao"></canvas>
-                    </div>
+        <section class="hero">
+            <div class="hero-inner">
+                <h1 class="hero-titulo">Sistema de Analise e Simulacao do Abastecimento Hidrico</h1>
+                <p class="hero-subtitulo">Monitoramento, analise e simulacao de redistribuicao de agua no municipio de Rio Verde, GO — com base em dados oficiais da Saneago, Camara Municipal e IBGE.</p>
+                <div class="hero-ctas">
+                    <a href="simulador.html" class="btn btn-primary">Abrir Simulador</a>
+                    <a href="metodologia.html" class="btn btn-outline">Entender Metodologia</a>
                 </div>
             </div>
         </section>
 
-        <section id="fontes" class="secao">
-            <h2>Notas sobre as Fontes</h2>
-            <p class="secao-descricao">
-                Detalhamento das fontes consultadas, incluindo data de acesso, tipo de
-                publicação e dados extraídos de cada uma.
-            </p>
-            <div id="fontes-container"></div>
+        <section id="problema" class="secao">
+            <h2>O Problema</h2>
+            <div class="secao-grid-2">
+                <div>
+                    <p>Rio Verde, com 241.494 habitantes (IBGE, 2025), e um dos municipios de maior crescimento economico do Centro-Oeste. Esse crescimento gera pressao crescente sobre o sistema de abastecimento de agua, operado pela Saneago.</p>
+                    <p>A distribuicao de agua entre reservatorios, bairros e zonas de abastecimento envolve decisoes operacionais complexas: niveis variaveis, consumo sazonal, eventos climaticos e riscos de desabastecimento.</p>
+                </div>
+                <div class="problema-card">
+                    <h3>Desafios Identificados</h3>
+                    <ul>
+                        <li>Distribuicao desigual entre pontos de reservacao</li>
+                        <li>Dependencia de mananciais sujeitos a variacao climatica</li>
+                        <li>Crescimento populacional acima da media nacional</li>
+                        <li>Decisoes operacionais baseadas em experiencia individual</li>
+                        <li>Falta de ferramentas computacionais de apoio a decisao</li>
+                    </ul>
+                </div>
+            </div>
         </section>
 
-        <section id="referencias" class="secao">
-            <h2>Referências</h2>
-            <ol class="lista-referencias">
-                <li>
-                    SANEAGO. <em>Prefeito e diretoria da Saneago realizam visita técnica em unidades de Rio Verde</em>.
-                    São Paulo: Saneago, 2023. Disponível em: https://www.saneago.com.br/#/noticia_interna/9868/3.
-                    Acesso em: 02 abr. 2026.
-                </li>
-                <li>
-                    CÂMARA MUNICIPAL DE RIO VERDE. <em>Prefeitura, Saneago e Governo de Goiás lançam as obras do novo sistema de abastecimento de água Rio Verdinho</em>.
-                    Rio Verde: Câmara Municipal, 2024. Disponível em: https://rioverde.go.leg.br/prefeitura-saneago-e-governo-de-goias-lancam-as-obras-do-novo-sistema-de-abastecimento-de-agua-rio-verdinho/.
-                    Acesso em: 02 abr. 2026.
-                </li>
-                <li>
-                    IBGE. <em>Estimativas da população</em>.
-                    Rio de Janeiro: IBGE, 2025. Disponível em: https://www.ibge.gov.br/.
-                    Acesso em: 02 abr. 2026.
-                </li>
-                <li>
-                    ASSOCIAÇÃO BRASILEIRA DE NORMAS TÉCNICAS. <em>NBR 12211: Estudos de concepção de sistemas de abastecimento de água</em>.
-                    Rio de Janeiro: ABNT, 1992.
-                </li>
-                <li>
-                    ASSOCIAÇÃO BRASILEIRA DE NORMAS TÉCNICAS. <em>NBR 12218: Projeto de rede de distribuição de água para abastecimento público</em>.
-                    Rio de Janeiro: ABNT, 1994.
-                </li>
-            </ol>
+        <section id="como-funciona" class="secao">
+            <h2>Como o Sistema Funciona</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-numero">1</div>
+                    <h3>Coleta de Dados</h3>
+                    <p>Dados oficiais da Saneago (capacidades, producao, cobertura), Camara Municipal (obras do Rio Verdinho) e IBGE (populacao) sao carregados no sistema.</p>
+                </div>
+                <div class="step">
+                    <div class="step-numero">2</div>
+                    <h3>Consolidacao</h3>
+                    <p>Os dados sao normalizados e estruturados em um modelo unificado de pontos de infraestrutura (ETAs, reservatorios, mananciais, zonas de abastecimento).</p>
+                </div>
+                <div class="step">
+                    <div class="step-numero">3</div>
+                    <h3>Calculo de Disponibilidade</h3>
+                    <p>Para cada ponto, o sistema calcula volume disponivel, reserva minima, autonomia estimada e nivel de criticidade com base em formulas hidrologicas (ABNT NBR 12211/12218).</p>
+                </div>
+                <div class="step">
+                    <div class="step-numero">4</div>
+                    <h3>Regras de Transferencia</h3>
+                    <p>O simulador avalia a viabilidade de transferencias entre pontos, respeitando restricoes de reserva minima, vazao maxima e perdas operacionais.</p>
+                </div>
+                <div class="step">
+                    <div class="step-numero">5</div>
+                    <h3>Previsao de Impacto</h3>
+                    <p>Antes de executar uma transferencia, o sistema projeta o impacto: volume final na origem e destino, autonomia resultante e risco de desabastecimento.</p>
+                </div>
+                <div class="step">
+                    <div class="step-numero">6</div>
+                    <h3>Recomendacoes Automaticas</h3>
+                    <p>Um motor de regras gera recomendacoes textuais explicaveis: "Transferencia viavel", "Risco para a origem", "Volume ideal sugerido: X m3".</p>
+                </div>
+            </div>
         </section>
 
+        <section id="dados-reais" class="secao">
+            <h2>Uso de Dados Reais</h2>
+            <p class="secao-descricao">Cada dado utilizado no sistema possui proveniencia registrada e classificacao de certeza.</p>
+            <div class="dados-grid">
+                <div class="dado-card">
+                    <h3>Saneago (Ago 2023)</h3>
+                    <ul>
+                        <li>ETA Abobora: 120 L/s</li>
+                        <li>CR Aeroporto: 2 x 1.000.000 L</li>
+                        <li>ETE Chapadinha: 58 L/s (MBBR)</li>
+                        <li>Cobertura agua: 99%</li>
+                        <li>Cobertura esgoto: 96,3%</li>
+                        <li>Rede coletora: 963 km</li>
+                    </ul>
+                </div>
+                <div class="dado-card">
+                    <h3>Camara Municipal (Out 2024)</h3>
+                    <ul>
+                        <li>Sistema Rio Verdinho Lote 1: R$ 47M</li>
+                        <li>ETA Rio Verdinho: 800 L/s (R$ 62,7M)</li>
+                        <li>Lote 3: adutoras + reservatorios (R$ 93M)</li>
+                        <li>Investimento total: R$ 202,7M</li>
+                    </ul>
+                </div>
+                <div class="dado-card">
+                    <h3>IBGE (2025)</h3>
+                    <ul>
+                        <li>Populacao estimada: 241.494 hab</li>
+                        <li>Consumo per capita: 150 L/hab/dia</li>
+                        <li>Demanda total estimada: 36.224 m3/dia</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="aviso-dados">
+                <strong>Nota:</strong> Dados marcados como "estimados" no simulador sao derivados de parametros academicos (ABNT NBR 12211) e devem ser substituidos por dados operacionais reais quando disponiveis.
+            </div>
+        </section>
+
+        <section id="logica-simulacao" class="secao">
+            <h2>Logica da Simulacao</h2>
+            <div class="secao-grid-2">
+                <div>
+                    <h3>Estado de Cada Ponto</h3>
+                    <p>O sistema rastreia, para cada ponto de infraestrutura:</p>
+                    <ul>
+                        <li><strong>Volume atual</strong> — quanto o ponto tem no momento</li>
+                        <li><strong>Capacidade maxima</strong> — limite fisico do reservatorio</li>
+                        <li><strong>Reserva minima</strong> — volume que nao pode ser violado</li>
+                        <li><strong>Consumo medio</strong> — saida diaria estimada</li>
+                        <li><strong>Prioridade</strong> — classificacao (baixa, media, alta, critica)</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Calculos Realizados</h3>
+                    <ul>
+                        <li><strong>Volume disponivel para cessao</strong> = max(0, volume atual - reserva minima)</li>
+                        <li><strong>Volume recebido</strong> = volume transferido x (1 - perda operacional)</li>
+                        <li><strong>Autonomia</strong> = volume final / consumo medio (dias)</li>
+                        <li><strong>Score do cenario</strong> = f(equilibrio, risco, desperdicio, melhoria)</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="por-que-funciona" class="secao">
+            <h2>Por Que Funciona</h2>
+            <div class="funciona-grid">
+                <div class="funciona-item">
+                    <h3>Dados em Regras</h3>
+                    <p>O sistema transforma dados operacionais em regras de decisao simulaveis, eliminando achismo na gestao hidrica.</p>
+                </div>
+                <div class="funciona-item">
+                    <h3>Comparacao de Cenarios</h3>
+                    <p>Permite comparar o estado atual com o cenario apos transferencia, quantificando ganhos e riscos antes de agir.</p>
+                </div>
+                <div class="funciona-item">
+                    <h3>Transparencia</h3>
+                    <p>Toda recomendacao e baseada em formulas explicitas e dados rastreaveis. Nenhuma decisao e "caixa preta".</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="resultados" class="secao">
+            <h2>Resultados Esperados</h2>
+            <div class="resultados-grid">
+                <div class="resultado-item">
+                    <h3>Equilibrio na Distribuicao</h3>
+                    <p>Melhor distribuicao de agua entre pontos, evitando excesso em uns e escassez em outros.</p>
+                </div>
+                <div class="resultado-item">
+                    <h3>Menor Risco de Falta</h3>
+                    <p>Identificacao antecipada de pontos criticos e recomendacoes de acao preventiva.</p>
+                </div>
+                <div class="resultado-item">
+                    <h3>Apoio a Decisao</h3>
+                    <p>Ferramenta computacional para apoiar operadores da Saneago na tomada de decisao diaria.</p>
+                </div>
+                <div class="resultado-item">
+                    <h3>Base para Expansao</h3>
+                    <p>Arquitetura preparada para integrar modelos mais avancados (series temporais, otimizacao) no futuro.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="academico" class="secao">
+            <h2>Contexto Academico</h2>
+            <div class="secao-grid-2">
+                <div>
+                    <h3>Objetivo Geral</h3>
+                    <p>Desenvolver uma plataforma computacional de analise e simulacao do sistema de abastecimento de agua do municipio de Rio Verde, GO, utilizando dados oficiais para apoiar a gestao de recursos hidricos municipais.</p>
+                    <h3>Objetivos Especificos</h3>
+                    <ol>
+                        <li>Mapear e catalogar a infraestrutura hidrica municipal com dados oficiais</li>
+                        <li>Implementar motor de simulacao de transferencia entre pontos</li>
+                        <li>Desenvolver sistema de recomendacao baseado em regras hidrologicas</li>
+                        <li>Criar interface interativa para visualizacao e analise de cenarios</li>
+                        <li>Classificar dados quanto a procedencia e nivel de certeza</li>
+                    </ol>
+                </div>
+                <div>
+                    <h3>Metodologia</h3>
+                    <p>Research aplicada, com abordagem quantitativa. Dados coletados de fontes oficiais (Saneago, IBGE, Camara Municipal) e processados por formulas hidrologicas das normas ABNT NBR 12211 e NBR 12218.</p>
+                    <h3>Contribuicao Tecnologica</h3>
+                    <p>Plataforma estatica, sem dependencias de servidor, executavel em qualquer navegador. Arquitetura modular permite extensao futura sem reescrita. Dados e logica separados, facilitando atualizacao.</p>
+                </div>
+            </div>
+        </section>
     </main>
 
     <footer class="rodape">
         <div class="rodape-conteudo">
-            <p>
-                <strong>Abastecimento de Água no Município de Rio Verde/GO</strong> &mdash;
-                Trabalho de Conclusão de Curso
-            </p>
-            <p>
-                Dados obtidos a partir de fontes públicas (Saneago, 2023; Câmara Municipal, 2024; IBGE, 2025).
-            </p>
-            <p class="rodape-nota">
-                Nota sobre coordenadas: As coordenadas apresentadas neste site foram obtidas por
-                geocodificação aproximada e <strong>não foram confirmadas por levantamento GPS</strong>.
-                Devem ser utilizadas exclusivamente para fins de visualização e análise acadêmica,
-                não substituindo levantamentos topográficos ou georreferenciados.
-            </p>
+            <p><strong>Abastecimento de Agua no Municipio de Rio Verde/GO</strong> — Trabalho de Conclusao de Curso</p>
+            <p>Dados obtidos a partir de fontes publicas (Saneago, 2023; Camara Municipal, 2024; IBGE, 2025).</p>
+            <p class="rodape-nota">Coordenadas obtidas por geocodificacao aproximada e nao foram confirmadas por levantamento GPS. Uso exclusivo para analise academica.</p>
         </div>
     </footer>
 
-    <div id="notificacoes" class="container-notificacoes"></div>
-
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script type="module" src="js/app.js"></script>
+    <script src="js/theme.js"></script>
 </body>
 </html>

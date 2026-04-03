@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cenarios — Abastecimento de Agua Rio Verde/GO</title>
+    <meta name="description" content="Simulacao de cenarios climaticos e operacionais para o abastecimento de Rio Verde/GO">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/simulador.css">
+</head>
+<body>
+    <header class="cabecalho">
+        <div class="cabecalho-conteudo">
+            <a href="index.html" class="cabecalho-logo">Rio Verde — Abastecimento Hidrico</a>
+            <button id="theme-toggle" class="btn-icon" aria-label="Alternar tema"></button>
+        </div>
+    </header>
+    <nav class="navegacao" id="navegacao">
+        <ul class="nav-lista">
+            <li><a href="index.html">Visao Geral</a></li>
+            <li><a href="metodologia.html">Metodologia</a></li>
+            <li><a href="dados.html">Dados Reais</a></li>
+            <li><a href="mapa.html">Mapa</a></li>
+            <li><a href="simulador.html">Simulador</a></li>
+            <li><a href="cenarios.html" class="nav-active">Cenarios</a></li>
+            <li><a href="equipe.html">Equipe / Projeto</a></li>
+        </ul>
+    </nav>
+    <main class="conteudo">
+        <section class="secao">
+            <h2>Simulacao de Cenarios</h2>
+            <p class="secao-descricao">Analise do impacto de eventos criticos sobre o sistema de abastecimento. Calculos seguem formulas hidrologicas das normas ABNT NBR 12211 e NBR 12218.</p>
+            <div class="cenarios-layout">
+                <div class="sim-painel sim-painel-esquerda">
+                    <div class="sim-bloco">
+                        <h3>Eventos</h3>
+                        <div class="botoes-eventos">
+                            <button id="btn-seca" class="btn btn-outline" type="button">Seca</button>
+                            <button id="btn-chuva" class="btn btn-outline" type="button">Chuva Intensa</button>
+                            <button id="btn-crescimento" class="btn btn-outline" type="button">Crescimento Populacional</button>
+                            <button id="btn-industrial" class="btn btn-outline" type="button">Aumento Industrial</button>
+                            <button id="btn-quebra" class="btn btn-outline" type="button">Quebra de Reservatorio</button>
+                        </div>
+                    </div>
+                    <div class="sim-bloco">
+                        <h3>Controle de Tempo</h3>
+                        <div class="botoes-tempo">
+                            <button id="btn-avancar-dia" class="btn btn-outline" type="button">+1 Dia</button>
+                            <button id="btn-avancar-mes" class="btn btn-outline" type="button">+1 Mes</button>
+                            <button id="btn-avancar-ano" class="btn btn-outline" type="button">+1 Ano</button>
+                        </div>
+                    </div>
+                    <div class="sim-bloco">
+                        <div class="simulacao-status">
+                            <div id="simulacao-status" class="status-texto">Simulacao inicializada</div>
+                            <button id="btn-reiniciar" class="btn btn-outline btn-reiniciar" type="button">Reiniciar</button>
+                        </div>
+                    </div>
+                    <div class="sim-bloco">
+                        <h3>Historico de Eventos</h3>
+                        <div id="lista-eventos" class="lista-eventos">
+                            <p class="evento-vazio">Nenhum evento registrado</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="sim-painel sim-painel-central">
+                    <div class="sim-bloco">
+                        <div class="grafico-wrapper">
+                            <h3>Producao e Demanda</h3>
+                            <canvas id="grafico-producao-demanda"></canvas>
+                        </div>
+                    </div>
+                    <div class="sim-bloco">
+                        <div class="grafico-wrapper">
+                            <h3>Evolucao da Simulacao</h3>
+                            <canvas id="grafico-simulacao"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="rodape">
+        <div class="rodape-conteudo">
+            <p><strong>Abastecimento de Agua no Municipio de Rio Verde/GO</strong> — Trabalho de Conclusao de Curso</p>
+            <p>Dados obtidos a partir de fontes publicas (Saneago, 2023; Camara Municipal, 2024; IBGE, 2025).</p>
+            <p class="rodape-nota">Coordenadas obtidas por geocodificacao aproximada e nao foram confirmadas por levantamento GPS. Uso exclusivo para analise academica.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/theme.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/simulador.js"></script>
+    <script src="js/hidrologia.js"></script>
+    <script src="js/ia.js"></script>
+    <script src="js/graficos.js"></script>
+    <script type="module" src="js/cenarios-page.js"></script>
+</body>
+</html>

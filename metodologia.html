@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metodologia — Abastecimento de Agua Rio Verde/GO</title>
+    <meta name="description" content="Metodologia e objetivos do TCC sobre abastecimento hidrico de Rio Verde/GO">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/visao-geral.css">
+</head>
+<body>
+    <header class="cabecalho">
+        <div class="cabecalho-conteudo">
+            <a href="index.html" class="cabecalho-logo">Rio Verde — Abastecimento Hidrico</a>
+            <button id="theme-toggle" class="btn-icon" aria-label="Alternar tema"></button>
+        </div>
+    </header>
+    <nav class="navegacao" id="navegacao">
+        <ul class="nav-lista">
+            <li><a href="index.html">Visao Geral</a></li>
+            <li><a href="metodologia.html" class="nav-active">Metodologia</a></li>
+            <li><a href="dados.html">Dados Reais</a></li>
+            <li><a href="mapa.html">Mapa</a></li>
+            <li><a href="simulador.html">Simulador</a></li>
+            <li><a href="cenarios.html">Cenarios</a></li>
+            <li><a href="equipe.html">Equipe / Projeto</a></li>
+        </ul>
+    </nav>
+    <main class="conteudo">
+        <section class="secao">
+            <h2>Metodologia</h2>
+            <div class="secao-grid-2">
+                <div>
+                    <h3>Objetivo Geral</h3>
+                    <p>Desenvolver uma plataforma computacional de analise e simulacao do sistema de abastecimento de agua do municipio de Rio Verde, GO, utilizando dados oficiais para apoiar a gestao de recursos hidricos municipais.</p>
+
+                    <h3>Objetivos Especificos</h3>
+                    <ol>
+                        <li>Mapear e catalogar a infraestrutura hidrica municipal com base em fontes oficiais (Saneago, Camara Municipal, IBGE);</li>
+                        <li>Implementar motor de simulacao de transferencia hídrica entre pontos de reservacao e distribuicao;</li>
+                        <li>Desenvolver sistema de recomendacao baseado em regras hidrologicas (ABNT NBR 12211 e NBR 12218);</li>
+                        <li>Criar interface interativa para visualizacao geografica e analise de cenarios operacionais;</li>
+                        <li>Classificar todos os dados utilizados quanto a procedencia, nivel de certeza e data de referencia;</li>
+                        <li>Simular cenarios de estresse hidrico (seca, crescimento populacional, falhas operacionais) e avaliar vulnerabilidades do sistema.</li>
+                    </ol>
+                </div>
+                <div>
+                    <h3>Abordagem Metodologica</h3>
+                    <p>Trata-se de uma pesquisa aplicada, com abordagem quantitativa, desenvolvida em tres etapas:</p>
+                    <p><strong>Etapa 1 — Levantamento de Dados:</strong> Coleta de dados oficiais junto a Saneago (relatorio institucional, agosto 2023), Camara Municipal de Rio Verde (materia sobre o sistema Rio Verdinho, outubro 2024) e IBGE (estimativa populacional 2025).</p>
+                    <p><strong>Etapa 2 — Modelagem Computacional:</strong> Implementacao de formulas hidrologicas (demanda, producao efetiva, balanco hidrico, indice de estresse) e motor de simulacao de transferencia entre pontos.</p>
+                    <p><strong>Etapa 3 — Desenvolvimento da Plataforma:</strong> Criacao de interface web com mapa interativo (Leaflet), graficos analíticos (Chart.js) e simulador de cenarios, todos executaveis diretamente no navegador.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="secao">
+            <h2>Formulas Utilizadas</h2>
+            <div class="formulas-grid">
+                <div class="formula-card">
+                    <h3>Demanda Diaria</h3>
+                    <div class="formula">D = P x C x F<sub>i</sub> / 1000</div>
+                    <p>Onde: P = populacao, C = consumo per capita (L/hab/dia), F<sub>i</sub> = fator industrial, resultado em m3/dia.</p>
+                    <p class="formula-fonte">Base: ABNT NBR 12211</p>
+                </div>
+                <div class="formula-card">
+                    <h3>Producao Efetiva</h3>
+                    <div class="formula">P<sub>ef</sub> = P<sub>bruta</sub> x (1 - perda%)</div>
+                    <p>Onde: P<sub>bruta</sub> = capacidade nominal da ETA, perda% = perdas na distribuicao (adotado 25%).</p>
+                    <p class="formula-fonte">Base: ABNT NBR 12218</p>
+                </div>
+                <div class="formula-card">
+                    <h3>Indice de Estresse Hidrico</h3>
+                    <div class="formula">IEH = D / P<sub>ef</sub></div>
+                    <p>Onde: D = demanda, P<sub>ef</sub> = producao efetiva. IEH &lt; 0,1 = sem estresse; IEH &gt; 0,4 = alto estresse.</p>
+                    <p class="formula-fonte">Adaptado de indicadores da ONU</p>
+                </div>
+                <div class="formula-card">
+                    <h3>Autonomia do Reservatorio</h3>
+                    <div class="formula">A = V / C<sub>medio</sub></div>
+                    <p>Onde: V = volume disponivel (m3), C<sub>medio</sub> = consumo medio diario (m3/dia). Resultado em dias.</p>
+                    <p class="formula-fonte">Formula padrao de operacao de reservatorios</p>
+                </div>
+                <div class="formula-card">
+                    <h3>Transferencia Viavel</h3>
+                    <div class="formula">V<sub>disp</sub> = max(0, V<sub>atual</sub> - R<sub>min</sub>)</div>
+                    <p>Onde: V<sub>disp</sub> = volume disponivel para cessao, R<sub>min</sub> = reserva minima obrigatoria.</p>
+                    <p class="formula-fonte">Regra operacional do simulador</p>
+                </div>
+                <div class="formula-card">
+                    <h3>Volume Recebido no Destino</h3>
+                    <div class="formula">V<sub>rec</sub> = V<sub>transf</sub> x (1 - perda<sub>op</sub>)</div>
+                    <p>Onde: V<sub>transf</sub> = volume transferido, perda<sub>op</sub> = perda operacional na transferencia.</p>
+                    <p class="formula-fonte">Regra operacional do simulador</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="secao">
+            <h2>Classificacao de Dados</h2>
+            <p class="secao-descricao">Todos os dados utilizados sao classificados quanto a certeza para garantir transparencia.</p>
+            <div class="dados-grid">
+                <div class="dado-card dado-confirmado">
+                    <h3>Confirmado</h3>
+                    <p>Dado obtido de fonte oficial e verificavel. Ex.: capacidade da ETA Abobora (Saneago, 2023).</p>
+                </div>
+                <div class="dado-card dado-derivado">
+                    <h3>Derivado</h3>
+                    <p>Estimado a partir de dado real por calculo direto. Ex.: capacidade em m3/dia a partir de L/s.</p>
+                </div>
+                <div class="dado-card dado-aproximado">
+                    <h3>Aproximado</h3>
+                    <p>Estimado com baixa precisao ou sem fonte direta. Ex.: coordenadas por geocodificacao de bairro.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="secao">
+            <h2>Limitacoes</h2>
+            <div class="limitacoes">
+                <ul>
+                    <li><strong>Coordenadas:</strong> Obtidas por geocodificacao aproximada, nao confirmadas por levantamento GPS.</li>
+                    <li><strong>Consumo por zona:</strong> Estimado com base na populacao atendida e consumo per capita ABNT, nao por medicao direta.</li>
+                    <li><strong>Volume atual dos reservatorios:</strong> Dados operacionais nao publicados pela Saneago; valores simulados para demonstracao.</li>
+                    <li><strong>Historico temporal:</strong> Nao foi possivel obter series historicas de consumo ou producao; o simulador usa parametros medios.</li>
+                    <li><strong>AMAE:</strong> A pagina de analise de impacto da AMAE retornou erro 404; dados reguladores nao foram acessados.</li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <footer class="rodape">
+        <div class="rodape-conteudo">
+            <p><strong>Abastecimento de Agua no Municipio de Rio Verde/GO</strong> — Trabalho de Conclusao de Curso</p>
+            <p>Dados obtidos a partir de fontes publicas (Saneago, 2023; Camara Municipal, 2024; IBGE, 2025).</p>
+            <p class="rodape-nota">Coordenadas obtidas por geocodificacao aproximada e nao foram confirmadas por levantamento GPS. Uso exclusivo para analise academica.</p>
+        </div>
+    </footer>
+
+    <script src="js/theme.js"></script>
+</body>
+</html>

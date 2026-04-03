@@ -1,68 +1,105 @@
-// Hidrologia adaptada para cidade única: Rio Verde
-// Importante: manter as fórmulas existentes, apenas adaptar o escopo
-
-export const CONSTANTES = {
-  diasReserva: 7,
-  consumoBaseLitrosDia: 150,
-  fatorIndustrial: 1.0
+export var CONSTANTES = {
+    diasReserva: 7,
+    consumoBaseLitrosDia: 150,
+    fatorIndustrial: 1.0
 };
 
-// Demanda diária (m³/d) com ajuste de industrial
 export function calcularDemandaDiaria(populacao, consumoLitrosDia, fatorIndustrial) {
-  const fator = (fatorIndustrial ?? 1.0);
-  const demandaLitros = populacao * consumoLitrosDia * fator;
-  // 1000 litros = 1 m³
-  return demandaLitros / 1000;
+    var fator = fatorIndustrial != null ? fatorIndustrial : 1.0;
+    return (populacao * consumoLitrosDia * fator) / 1000;
 }
 
-// Demanda mensal (m³/mês) a partir da diária
 export function calcularDemandaMensal(demandaDiaria, dias) {
-  return demandaDiaria * (dias ?? 30);
+    return demandaDiaria * (dias || 30);
 }
 
-// Produção efetiva após perdas (%)
 export function calcularProducaoEfetiva(producaoBruta, perdaPercentual) {
-  const perda = (perdaPercentual ?? 0) / 100;
-  return producaoBruta * (1 - perda);
+    var perda = (perdaPercentual || 0) / 100;
+    return producaoBruta * (1 - perda);
 }
 
-// Balanço hídrico simples, adaptado a nível de reservatório (percentual 0-100)
 export function calcularBalancoHidrico(producao, demanda, nivelReservatorio) {
-  const fatorNivel = Math.max(0, Math.min(1, (nivelReservatorio ?? 0) / 100));
-  const balanco = (producao - demanda) * fatorNivel;
-  return balanco;
+    var fatorNivel = Math.max(0, Math.min(1, (nivelReservatorio || 0) / 100));
+    return (producao - demanda) * fatorNivel;
 }
 
-// Índice de estresse hídrico (indicativo)
 export function calcularIndiceEstresseHidrico(demanda, disponibilidade) {
-  const disp = Math.max(1, disponibilidade ?? 1);
-  return demanda / disp;
+    return demanda / Math.max(1, disponibilidade || 1);
 }
 
-// Consumo sazonal (m³/d) com base mensal; usa fatores simples por mês
 export function calcularConsumoSazonal(consumoBase, mes) {
-  const fatores = [1.02, 1.01, 0.98, 0.95, 1.00, 1.05, 1.00, 0.95, 0.97, 1.04, 1.03, 1.01];
-  const idx = ((mes - 1) % 12 + 12) % 12;
-  const fator = fatores[idx];
-  return consumoBase * fator;
+    var fatores = [1.02, 1.01, 0.98, 0.95, 1.00, 1.05, 1.00, 0.95, 0.97, 1.04, 1.03, 1.01];
+    return consumoBase * fatores[((mes - 1) % 12 + 12) % 12];
 }
 
-// Efeito climático sobre produção (simulações simples)
 export function calcularEfeitoClimatico(tipoEvento, producaoBase) {
-  if (!tipoEvento) return producaoBase;
-  switch (tipoEvento) {
-    case 'seca':
-      return producaoBase * 0.6;
-    case 'chuva_intensa':
-      return producaoBase * 1.4;
-    default:
-      return producaoBase;
-  }
+    if (!tipoEvento) return producaoBase;
+    if (tipoEvento === 'seca') return producaoBase * 0.6;
+    if (tipoEvento === 'chuva_intensa') return producaoBase * 1.4;
+    return producaoBase;
 }
 
-// Reserva mínima para garantir funcionamento (m³)
 export function calcularReservaMinima(demandaDiaria, diasReserva) {
-  return demandaDiaria * (diasReserva ?? 1);
+    return demandaDiaria * (diasReserva || 1);
 }
 
-// NOTAS: Funções removidas para operação única da cidade (Rio Verde)
+export function calcularOcupacaoPercentual(volume, capacidade) {
+    if (!capacidade || capacidade <= 0) return 0;
+    return Math.min(100, Math.max(0, (volume / capacidade) * 100));
+}
+
+export function calcularAutonomiaDias(volume, consumoMedio) {
+    if (!consumoMedio || consumoMedio <= 0) return Infinity;
+    return volume / consumoMedio;
+}
+
+export function classificarCriticidade(ocupacaoPercentual) {
+    if (ocupacaoPercentual > 70) return 'normal';
+    if (ocupacaoPercentual > 40) return 'atencao';
+    if (ocupacaoPercentual > 20) return 'risco';
+    return 'critico';
+}
+
+export function calcularScoreCenario(resultado) {
+    if (!resultado) return 0;
+    var score = 50;
+
+    if (resultado.origem.abaixoReserva) score -= 30;
+    if (resultado.destino.abaixoReserva) score -= 20;
+
+    if (resultado.perdaPercentual > 20) score -= 10;
+    if (resultado.perdaPercentual > 30) score -= 10;
+
+    if (resultado.destino.autonomiaDepois > resultado.destino.autonomiaAntes) score += 15;
+    if (resultado.origem.autonomiaDepois > 3) score += 10;
+    if (!resultado.origem.abaixoReserva && !resultado.destino.abaixoReserva) score += 15;
+
+    if (resultado.volumeTransferido <= 0) score -= 40;
+
+    return Math.max(0, Math.min(100, score));
+}
+
+export function calcularVolumeIdeal(origem, destino, perdaPercentual) {
+    if (!origem || !destino) return 0;
+    var volumeDisponivel = Math.max(0, origem.volume_atual_m3 - origem.reserva_minima_m3);
+    var espacoDestino = destino.capacidade_maxima_m3 - destino.volume_atual_m3;
+    var perda = (perdaPercentual || 0) / 100;
+    var volumeIdeal = Math.min(volumeDisponivel, espacoDestino / (1 - perda));
+
+    if (destino.consumo_medio_m3_dia > 0) {
+        var necessarioPara7dias = destino.consumo_medio_m3_dia * 7;
+        var deficit = Math.max(0, necessarioPara7dias - destino.volume_atual_m3);
+        volumeIdeal = Math.min(volumeIdeal, deficit / (1 - perda));
+    }
+
+    return Math.max(0, Math.round(volumeIdeal));
+}
+
+window.calcularDemandaDiaria = calcularDemandaDiaria;
+window.calcularProducaoEfetiva = calcularProducaoEfetiva;
+window.calcularOcupacaoPercentual = calcularOcupacaoPercentual;
+window.calcularAutonomiaDias = calcularAutonomiaDias;
+window.classificarCriticidade = classificarCriticidade;
+window.calcularScoreCenario = calcularScoreCenario;
+window.calcularVolumeIdeal = calcularVolumeIdeal;
+window.CONSTANTES = CONSTANTES;

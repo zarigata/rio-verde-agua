@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dados Reais — Abastecimento de Agua Rio Verde/GO</title>
+    <meta name="description" content="Infraestrutura, indicadores e fontes de dados do sistema de abastecimento de Rio Verde/GO">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header class="cabecalho">
+        <div class="cabecalho-conteudo">
+            <a href="index.html" class="cabecalho-logo">Rio Verde — Abastecimento Hidrico</a>
+            <button id="theme-toggle" class="btn-icon" aria-label="Alternar tema"></button>
+        </div>
+    </header>
+    <nav class="navegacao" id="navegacao">
+        <ul class="nav-lista">
+            <li><a href="index.html">Visao Geral</a></li>
+            <li><a href="metodologia.html">Metodologia</a></li>
+            <li><a href="dados.html" class="nav-active">Dados Reais</a></li>
+            <li><a href="mapa.html">Mapa</a></li>
+            <li><a href="simulador.html">Simulador</a></li>
+            <li><a href="cenarios.html">Cenarios</a></li>
+            <li><a href="equipe.html">Equipe / Projeto</a></li>
+        </ul>
+    </nav>
+    <main class="conteudo">
+        <section class="secao">
+            <h2>Infraestrutura Hidrica</h2>
+            <p class="secao-descricao">Relacao dos ativos de infraestrutura identificados no municipio de Rio Verde, com capacidade operacional, operadora e status.</p>
+            <div id="tabela-infraestrutura"></div>
+        </section>
+
+        <section class="secao">
+            <h2>Indicadores Municipais</h2>
+            <p class="secao-descricao">Indicadores de saneamento basico conforme dados da Saneago (2023) e IBGE.</p>
+            <div id="indicadores-container"></div>
+        </section>
+
+        <section class="secao">
+            <h2>Fontes Consultadas</h2>
+            <p class="secao-descricao">Detalhamento das fontes, incluindo data de acesso, tipo e dados extraidos.</p>
+            <div id="fontes-container"></div>
+        </section>
+    </main>
+
+    <footer class="rodape">
+        <div class="rodape-conteudo">
+            <p><strong>Abastecimento de Agua no Municipio de Rio Verde/GO</strong> — Trabalho de Conclusao de Curso</p>
+            <p>Dados obtidos a partir de fontes publicas (Saneago, 2023; Camara Municipal, 2024; IBGE, 2025).</p>
+            <p class="rodape-nota">Coordenadas obtidas por geocodificacao aproximada e nao foram confirmadas por levantamento GPS. Uso exclusivo para analise academica.</p>
+        </div>
+    </footer>
+
+    <script src="js/theme.js"></script>
+    <script src="js/data.js"></script>
+    <script type="module" src="js/dados-page.js"></script>
+</body>
+</html>

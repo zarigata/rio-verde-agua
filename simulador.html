@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador — Abastecimento de Agua Rio Verde/GO</title>
+    <meta name="description" content="Simulador interativo de transferencia hidrica entre pontos de abastecimento de Rio Verde/GO">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/simulador.css">
+</head>
+<body>
+    <header class="cabecalho">
+        <div class="cabecalho-conteudo">
+            <a href="index.html" class="cabecalho-logo">Rio Verde — Abastecimento Hidrico</a>
+            <button id="theme-toggle" class="btn-icon" aria-label="Alternar tema"></button>
+        </div>
+    </header>
+    <nav class="navegacao" id="navegacao">
+        <ul class="nav-lista">
+            <li><a href="index.html">Visao Geral</a></li>
+            <li><a href="metodologia.html">Metodologia</a></li>
+            <li><a href="dados.html">Dados Reais</a></li>
+            <li><a href="mapa.html">Mapa</a></li>
+            <li><a href="simulador.html" class="nav-active">Simulador</a></li>
+            <li><a href="cenarios.html">Cenarios</a></li>
+            <li><a href="equipe.html">Equipe / Projeto</a></li>
+        </ul>
+    </nav>
+    <main class="conteudo">
+
+        <section class="sim-hero">
+            <h2>Simulador de Transferencia Hidrica</h2>
+            <p class="sim-hero-desc">Selecione pontos de origem e destino, ajuste os parametros e visualize o impacto da transferencia em tempo real.</p>
+        </section>
+
+        <div class="sim-layout">
+            <aside class="sim-painel sim-painel-esquerda">
+                <div class="sim-bloco">
+                    <h3>Selecao de Pontos</h3>
+                    <div class="sim-campo">
+                        <label for="sel-origem">Origem</label>
+                        <select id="sel-origem"><option value="">Carregando...</option></select>
+                        <div id="info-origem" class="sim-info-ponto"></div>
+                    </div>
+                    <div class="sim-campo">
+                        <label for="sel-destino">Destino</label>
+                        <select id="sel-destino"><option value="">Carregando...</option></select>
+                        <div id="info-destino" class="sim-info-ponto"></div>
+                    </div>
+                </div>
+
+                <div class="sim-bloco">
+                    <h3>Parametros</h3>
+                    <div class="sim-campo">
+                        <label for="input-volume">Volume a transferir (m3)</label>
+                        <input type="range" id="input-volume" min="0" max="1000" value="200" step="10">
+                        <output id="output-volume">200 m3</output>
+                    </div>
+                    <div class="sim-campo">
+                        <label for="input-perda">Perda operacional (%)</label>
+                        <input type="range" id="input-perda" min="0" max="50" value="5" step="1">
+                        <output id="output-perda">5%</output>
+                    </div>
+                    <div class="sim-campo">
+                        <label for="input-horizonte">Horizonte temporal</label>
+                        <select id="input-horizonte">
+                            <option value="6">6 horas</option>
+                            <option value="12">12 horas</option>
+                            <option value="24" selected>24 horas (1 dia)</option>
+                            <option value="48">48 horas (2 dias)</option>
+                            <option value="168">7 dias</option>
+                        </select>
+                    </div>
+                    <button id="btn-executar" class="btn btn-primary sim-btn-executar" type="button">Executar Transferencia</button>
+                    <button id="btn-resetar" class="btn btn-outline sim-btn-resetar" type="button">Resetar Simulacao</button>
+                </div>
+            </aside>
+
+            <section class="sim-central">
+                <div class="sim-bloco">
+                    <h3>Estado dos Pontos</h3>
+                    <div id="sim-pontos-grid" class="sim-pontos-grid"></div>
+                </div>
+
+                <div class="sim-bloco">
+                    <h3>Resultado da Transferencia</h3>
+                    <div id="sim-resultado" class="sim-resultado">
+                        <p class="sim-placeholder">Configure os parametros e execute uma transferencia para ver os resultados.</p>
+                    </div>
+                </div>
+
+                <div class="sim-bloco">
+                    <h3>Comparativo de Cenarios</h3>
+                    <div class="sim-graficos-row">
+                        <div class="grafico-wrapper">
+                            <h4>Nivel Antes / Depois</h4>
+                            <canvas id="grafico-antes-depois"></canvas>
+                        </div>
+                        <div class="grafico-wrapper">
+                            <h4>Autonomia Estimada (dias)</h4>
+                            <canvas id="grafico-autonomia"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <aside class="sim-painel sim-painel-direita">
+                <div class="sim-bloco">
+                    <h3>Recomendacao</h3>
+                    <div id="sim-recomendacao" class="sim-recomendacao">
+                        <p class="sim-placeholder">A recomendacao sera exibida apos configurar a transferencia.</p>
+                    </div>
+                </div>
+
+                <div class="sim-bloco">
+                    <h3>Indicadores</h3>
+                    <div id="sim-indicadores" class="sim-indicadores"></div>
+                </div>
+
+                <div class="sim-bloco">
+                    <h3>Log da Sessao</h3>
+                    <div id="sim-log" class="sim-log">
+                        <p class="sim-placeholder">Nenhuma acao registrada.</p>
+                    </div>
+                </div>
+
+                <div class="sim-bloco sim-explicacao">
+                    <h3>Como Funciona</h3>
+                    <details>
+                        <summary>Como calculamos a recomendacao</summary>
+                        <p>O sistema avalia: (1) se a origem permanece acima da reserva minima; (2) se o destino melhora sua autonomia; (3) se as perdas sao aceitaveis; (4) o equilibrio entre todos os pontos. Cada criterio gera um score, e a recomendacao reflete o resultado combinado.</p>
+                    </details>
+                    <details>
+                        <summary>O que significa autonomia</summary>
+                        <p>Autonomia e o numero de dias que um ponto consegue atender seu consumo com o volume atual, sem receber nova agua. Calculada como: volume disponivel / consumo medio diario.</p>
+                    </details>
+                    <details>
+                        <summary>Por que este cenario e arriscado</summary>
+                        <p>Um cenario e classificado como arriscado quando a transferencia faz com que a origem ou o destino fique abaixo da reserva minima obrigatoria, ou quando a autonomia cai abaixo de 3 dias.</p>
+                    </details>
+                    <details>
+                        <summary>Como os dados reais entram na simulacao</summary>
+                        <p>Dados confirmados (Saneago, Camara Municipal, IBGE) alimentam capacidade, producao e populacao. Dados estimados (marcados na interface) sao derivados de parametros academicos e podem ser ajustados pelo usuario.</p>
+                    </details>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <footer class="rodape">
+        <div class="rodape-conteudo">
+            <p><strong>Abastecimento de Agua no Municipio de Rio Verde/GO</strong> — Trabalho de Conclusao de Curso</p>
+            <p>Dados obtidos a partir de fontes publicas (Saneago, 2023; Camara Municipal, 2024; IBGE, 2025).</p>
+            <p class="rodape-nota">Coordenadas obtidas por geocodificacao aproximada e nao foram confirmadas por levantamento GPS. Uso exclusivo para analise academica.</p>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/theme.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/simulador.js"></script>
+    <script src="js/hidrologia.js"></script>
+    <script src="js/ia.js"></script>
+    <script src="js/redistribuicao.js"></script>
+    <script src="js/graficos.js"></script>
+    <script type="module" src="js/simulador-page.js"></script>
+</body>
+</html>
