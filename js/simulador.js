@@ -1,4 +1,12 @@
-import { calcularDemandaDiaria, calcularProducaoEfetiva } from './hidrologia.js';
+function calcularDemandaDiaria(populacao, consumoLitrosDia, fatorIndustrial) {
+    var fator = fatorIndustrial != null ? fatorIndustrial : 1.0;
+    return (populacao * consumoLitrosDia * fator) / 1000;
+}
+
+function calcularProducaoEfetiva(producaoBruta, perdaPercentual) {
+    var perda = (perdaPercentual || 0) / 100;
+    return producaoBruta * (1 - perda);
+}
 
 var estado = null;
 var inscritores = [];
