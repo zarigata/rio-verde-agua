@@ -37,7 +37,7 @@
 
         var opts = '<option value="">Selecione...</option>';
         pontosOriginais.forEach(function(p) {
-            var label = p.nome + ' (' + LABELS_TIPO[p.tipo] + p.tipo + ')';
+            var label = p.nome + ' (' + (LABELS_TIPO[p.tipo] || p.tipo) + ')';
             opts += '<option value="' + p.id + '">' + label + '</option>';
         });
         selOrigem.innerHTML = opts;

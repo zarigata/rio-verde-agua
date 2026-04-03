@@ -14,6 +14,10 @@ Thumbs.db
 # Screenshots de desenvolvimento
 screenshot-*.png
 layout_screenshot.png
+qa-*.png
+
+# Playwright MCP
+.playwright-mcp/
 
 # Scripts de teste
 test_*.mjs
